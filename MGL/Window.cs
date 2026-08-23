@@ -1,3 +1,4 @@
+using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
@@ -8,9 +9,8 @@ public class Window
 {
     private IWindow _windowHandle;
     private GL _gl;
-
-    public delegate void Resize(uint width, uint height);
-    public event Resize? OnResize;
+    
+    public event Action<uint, uint>? OnResize;
 
     public Window(uint width, uint height, string title)
     {
@@ -26,6 +26,7 @@ public class Window
             OnResize?.Invoke((uint)d.X, (uint)d.Y);
             Env.Gl.Viewport(0, 0, (uint)d.X, (uint)d.Y);
         });
+           
     }
     
     public void Initialize()
@@ -39,7 +40,7 @@ public class Window
     public bool ShouldClose() => _windowHandle.IsClosing;
     public void Close() => _windowHandle.Close();
     public void Bind() => Env.Gl = _gl;
-
+    
     public (uint, uint) GetSize()
     {
         return new((uint)_windowHandle.Size.X, (uint)_windowHandle.Size.Y);

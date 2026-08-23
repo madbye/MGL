@@ -23,7 +23,7 @@ public class ShaderProgram : IDisposable
         
         Env.Gl.GetProgram(Handle, ProgramPropertyARB.LinkStatus, out int lStatus);
         if (lStatus != (int) GLEnum.True)
-            throw new Exception("Program failed to link: " + Env.Gl.GetProgramInfoLog(Handle));
+            throw new Exception($"Program failed to link, status: {lStatus}, error: " + Env.Gl.GetProgramInfoLog(Handle));
 
         foreach (var shader in shaders)
         {
