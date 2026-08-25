@@ -42,7 +42,7 @@ public class TextRenderer
 			_indexBuffer.SetData(indexData, 0, indexData.Length);
 
 			_shader = program;
-			_shader.Use();
+			_shader.Bind();
 
 			_vao = new VertexArrayObject(sizeof(VertexPositionColorTexture));
 			_vao.Bind();
@@ -80,7 +80,7 @@ public class TextRenderer
 			Env.Gl.Disable(EnableCap.DepthTest);
 			Env.Gl.Enable(EnableCap.Blend);
 
-			_shader.Use();
+			_shader.Bind();
 			_shader.SetUniform("TextureSampler", 0);
 			
 			var transform = Matrix4x4.CreateOrthographicOffCenter(0, width, height, 0, 0, -1);
@@ -148,7 +148,7 @@ public class TextRenderer
 		{
 			Env.Gl.Viewport(0,0,(uint)width, (uint)height);
     
-			_shader.Use();
+			_shader.Bind();
 			var transform = Matrix4x4.CreateOrthographicOffCenter(0, width, height, 0, 0, -1);
 			_shader.SetUniform("MatrixTransform", transform);
 		}

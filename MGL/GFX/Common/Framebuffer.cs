@@ -12,7 +12,7 @@ public class Framebuffer
     private uint _fbo;
     private uint _texture;
     
-    private static VAO? _quad;
+    private static VAO _quad;
     
     public uint Width { get; private set; }
     public uint Height { get; private set; }
@@ -26,7 +26,7 @@ public class Framebuffer
         Width = width;
         Height = height;
         
-        _quad ??= MeshGenerator.GenQuad();
+        _quad = MeshGenerator.GenQuad();
         _textureFilter = textureFilter;
         
         RecreateBuffers(width, height, textureFilter);
@@ -109,7 +109,7 @@ public class Framebuffer
         Env.Gl.Viewport(0, 0, windowWidth, windowHeight);
         
         Texture2D.Bind();
-        DefaultShaders.GetBlit().Use();
+        DefaultShaders.GetBlit().Bind();
         _quad.Draw();
         
         RenderCommand.DepthTest = true;

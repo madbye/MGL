@@ -33,7 +33,7 @@ public class ShaderProgram : IDisposable
 
     public unsafe void SetUniform(string name, object value)
     {
-        Use();
+        Bind();
         int location = Env.Gl.GetUniformLocation(Handle, name);
         switch (value)
         {
@@ -79,7 +79,7 @@ public class ShaderProgram : IDisposable
         var result = Env.Gl.GetUniformLocation(Handle, name);
         return result;
     }
-    public void Use()
+    public void Bind()
     {
         Current = this;
         Env.Gl.UseProgram(Handle);

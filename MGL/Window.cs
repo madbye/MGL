@@ -1,3 +1,4 @@
+using MGL.Input;
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -35,6 +36,8 @@ public class Window
         _gl = _windowHandle.CreateOpenGL();
         Bind();
     }
+
+    public InputContext GetInputContext() => new(_windowHandle.CreateInput());
     public void SwapBuffers() => _windowHandle.SwapBuffers();
     public void DoEvents() => _windowHandle.DoEvents();
     public bool ShouldClose() => _windowHandle.IsClosing;

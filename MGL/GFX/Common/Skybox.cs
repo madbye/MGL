@@ -24,7 +24,7 @@ public class Skybox
 
     public void DrawSkybox(PerspectiveCamera perspectiveCamera)
     {
-        _shaderProgram.Use();
+        _shaderProgram.Bind();
         _shaderProgram.SetUniform("view", perspectiveCamera.GetViewMatrix());
         _shaderProgram.SetUniform("proj", perspectiveCamera.GetProjectionMatrix());
         _shaderProgram.SetUniform("model", Matrix4x4.CreateRotationX(1.5708f) * Matrix4x4.CreateTranslation(perspectiveCamera.Position));

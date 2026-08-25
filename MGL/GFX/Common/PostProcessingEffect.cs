@@ -41,7 +41,7 @@ public class PostProcessingEffect
         RenderCommand.DepthTest = false;
         Framebuffer.BeginFrame();
         
-        _program.Use();
+        _program.Bind();
         texture2D.Bind();
         _vao.Draw();
         
