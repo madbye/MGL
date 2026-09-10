@@ -51,11 +51,6 @@ public class InputContext
         return _inputContext.Mice[0].Position;
     }
 
-    // public Vector2 GetMouseDelta()
-    // {
-    //     return _inputContext.Mice[0].
-    // }
-
     public bool GetMouseButton(MouseButton button)
     {
         return _inputContext.Mice[0].IsButtonPressed((Silk.NET.Input.MouseButton)button);
