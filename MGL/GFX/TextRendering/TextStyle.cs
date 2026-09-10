@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace MGL.GFX.UI.TextRendering;
+namespace MGL.GFX.TextRendering;
 
 public struct TextStyle(Font font, Color textColor, bool stroked = false, int strokeThiсkness = 1)
 {

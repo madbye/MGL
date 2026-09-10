@@ -10,45 +10,51 @@ uniform vec3 lightColor = vec3(1, 1, 1);
 
 uniform vec3 viewPos;
 
-uniform bool shaded = true;
-
-uniform float specularStrength;
-uniform float ambientStrength;
+uniform float specularStrength = 0.4f;
+uniform float ambientStrength = 0.6f;
 
 in vec3 FragPos;  
-in vec3 Normal;  
+in vec3 Normal;
 
 struct Light {
+    int type;
+
+    vec3 position;
     vec3 direction;
-  
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec3 color;
+
+    float constant;
+    float linear;
+    float quadratic;
+
+    float cutOff;
+    float outerCutOff;
+
+    float radius;
 };
 
+#define NR_LIGHTS 16
+uniform Light lights[NR_LIGHTS];
+uniform int numLights;
+
 void main()
-{  
-    if(shaded){
-        vec3 norm = normalize(Normal);
-        vec3 lightDir = normalize(lightPos - FragPos);
+{
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
 
-        float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = diff * lightColor;
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
 
-        vec3 ambient = ambientStrength * lightColor;
+    vec3 ambient = ambientStrength * lightColor;
 
-        vec3 viewDir = normalize(viewPos - FragPos);
-        vec3 reflectDir = reflect(-lightDir, norm);
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
 
 
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16);
-        vec3 specular = specularStrength * spec * vec3(1,1,1);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16);
+    vec3 specular = specularStrength * spec * vec3(1,1,1);
 
-        vec3 result = ambient + diffuse + specular;
-        
-        out_color =  vec4(result, 1.0) * texture(uTexture, frag_texCoords);
-    }
-    else{
-        out_color = texture(uTexture, frag_texCoords);
-    }
+    vec3 result = ambient + diffuse + specular;
+    
+    out_color =  vec4(result, 1.0) * texture(uTexture, frag_texCoords);
 }

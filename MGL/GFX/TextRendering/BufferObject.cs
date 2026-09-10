@@ -1,8 +1,7 @@
-using System;
 using System.Runtime.InteropServices;
 using Silk.NET.OpenGL;
 
-namespace MGL.GFX.UI.TextRendering
+namespace MGL.GFX.TextRendering
 {
 	internal class BufferObject<T> : IDisposable where T : unmanaged
 	{

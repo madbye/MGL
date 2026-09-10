@@ -1,6 +1,6 @@
 using MGL.GFX.Shaders;
 
-namespace MGL.GFX.Lights;
+namespace MGL.GFX._3D.Lights;
 
 public static class Lighting
 {

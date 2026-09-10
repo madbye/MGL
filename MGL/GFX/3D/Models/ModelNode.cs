@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using System.Numerics;
 using MGL.GFX.Shaders;
 
-namespace MGL.GFX.Models;
+namespace MGL.GFX._3D.Models;
 
 public class ModelNode(string name, List<ModelNode> nodes, List<Mesh> meshes, Matrix4x4 transform)
 {

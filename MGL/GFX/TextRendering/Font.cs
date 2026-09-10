@@ -1,6 +1,6 @@
 using FontStashSharp;
 
-namespace MGL.GFX.UI.TextRendering;
+namespace MGL.GFX.TextRendering;
 
 public class Font
 {

@@ -1,8 +1,8 @@
 using MGL.GFX.Shaders;
 using MGL.GFX.Textures;
-using MGL.GFX.VertexAttributes;
 using MGL.Utils;
 using Silk.NET.OpenGL;
+using VertexArray = MGL.GFX.VertexArray.VertexArray;
 
 namespace MGL.GFX.Common;
 
@@ -12,7 +12,7 @@ public class Framebuffer
     private uint _fbo;
     private uint _texture;
     
-    private static VAO _quad;
+    private static VertexArray.VertexArray _quad;
     
     public uint Width { get; private set; }
     public uint Height { get; private set; }

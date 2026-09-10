@@ -1,7 +1,6 @@
 using System.Numerics;
-using MGL.GFX.Models;
 
-namespace MGL.GFX.Models;
+namespace MGL.GFX._3D.Models;
 
 public class Model
 {

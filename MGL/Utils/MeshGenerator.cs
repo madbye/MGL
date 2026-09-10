@@ -1,69 +1,64 @@
 using System;
 using System.Collections.Generic;
 using MGL.GFX;
-using MGL.GFX.VertexAttributes;
+using MGL.GFX.VertexArray;
 
 namespace MGL.Utils;
 
 public static class MeshGenerator
 {
-    
-    public static VAO GenQuad()
+    public static VertexArray GenQuad(float width = 1f, float height = 1f)
     {
-        VertexAttributePointer pos = new(0, 3, 0); 
-        VertexAttributePointer tex = new(2, 2, 3);
         float[] vertices =
         {
-            1f, -1f, 0f, 1, 0,
-            1f, 1f, 0f, 1, 1,
-            -1f, 1f, 0f, 0, 1,
-            -1f,  -1f, 0f, 0, 0
+            //     Position            Normal         UV
+            -width, -height,  0f,    0f, 0f, 1f,    0f, 0f,
+             width, -height,  0f,    0f, 0f, 1f,    1f, 0f,
+             width,  height,  0f,    0f, 0f, 1f,    1f, 1f,
+             -width,  height,  0f,    0f, 0f, 1f,    0f, 1f,
         };
         int[] indices =
         {
             0, 1, 3,
             1, 2, 3
         };
-        return new(vertices, indices, new[]{pos, tex});
+        return new(vertices, indices, VertexLayouts.Default3D);
     }
     
-    public static VAO GenCube()
+    public static VertexArray GenCube()
     {
-        VertexAttributePointer pos = new(0, 3, 0);
-        VertexAttributePointer normal = new(1, 3, 3);
-        VertexAttributePointer tex = new(2, 2, 6);
-
         float[] vertices =
         {
-            -0.5f, -0.5f,  0.5f,  0, 0, 1,  0, 0,
-            0.5f, -0.5f,  0.5f,  0, 0, 1,  1, 0,
-            0.5f,  0.5f,  0.5f,  0, 0, 1,  1, 1,
-            -0.5f,  0.5f,  0.5f,  0, 0, 1,  0, 1,
+            //    Position            Normal       UV
+            -0.5f, -0.5f,  0.5f,    0,  0,  1,    0, 0,
+             0.5f, -0.5f,  0.5f,    0,  0,  1,    1, 0,
+             0.5f,  0.5f,  0.5f,    0,  0,  1,    1, 1,
+            -0.5f,  0.5f,  0.5f,    0,  0,  1,    0, 1,
     
-            -0.5f, -0.5f, -0.5f,  0, 0, -1,  1, 0,
-            0.5f, -0.5f, -0.5f,  0, 0, -1,  0, 0,
-            0.5f,  0.5f, -0.5f,  0, 0, -1,  0, 1,
-            -0.5f,  0.5f, -0.5f,  0, 0, -1,  1, 1,
+            -0.5f, -0.5f, -0.5f,    0,  0, -1,    1, 0,
+             0.5f, -0.5f, -0.5f,    0,  0, -1,    0, 0,
+             0.5f,  0.5f, -0.5f,    0,  0, -1,    0, 1,
+            -0.5f,  0.5f, -0.5f,    0,  0, -1,    1, 1,
     
-            -0.5f,  0.5f, -0.5f,  0, 1, 0,  0, 1,
-            0.5f,  0.5f, -0.5f,  0, 1, 0,  1, 1,
-            0.5f,  0.5f,  0.5f,  0, 1, 0,  1, 0,
-            -0.5f,  0.5f,  0.5f,  0, 1, 0,  0, 0,
+            -0.5f,  0.5f, -0.5f,    0,  1,  0,    0, 1,
+             0.5f,  0.5f, -0.5f,    0,  1,  0,    1, 1,
+             0.5f,  0.5f,  0.5f,    0,  1,  0,    1, 0,
+            -0.5f,  0.5f,  0.5f,    0,  1,  0,    0, 0,
 
-            -0.5f, -0.5f, -0.5f,  0, -1, 0,  0, 0,
-            0.5f, -0.5f, -0.5f,  0, -1, 0,  1, 0,
-            0.5f, -0.5f,  0.5f,  0, -1, 0,  1, 1,
-            -0.5f, -0.5f,  0.5f,  0, -1, 0,  0, 1,
+            -0.5f, -0.5f, -0.5f,    0, -1,  0,    0, 0,
+             0.5f, -0.5f, -0.5f,    0, -1,  0,    1, 0,
+             0.5f, -0.5f,  0.5f,    0, -1,  0,    1, 1,
+            -0.5f, -0.5f,  0.5f,    0, -1,  0,    0, 1,
 
-            0.5f, -0.5f, -0.5f,  1, 0, 0,  1, 0,
-            0.5f, -0.5f,  0.5f,  1, 0, 0,  0, 0,
-            0.5f,  0.5f,  0.5f,  1, 0, 0,  0, 1,
-            0.5f,  0.5f, -0.5f,  1, 0, 0,  1, 1,
+             0.5f, -0.5f, -0.5f,    1,  0,  0,    1, 0,
+             0.5f, -0.5f,  0.5f,    1,  0,  0,    0, 0,
+             0.5f,  0.5f,  0.5f,    1,  0,  0,    0, 1,
+             0.5f,  0.5f, -0.5f,    1,  0,  0,    1, 1,
 
-            -0.5f, -0.5f, -0.5f, -1, 0, 0,  0, 0,
-            -0.5f, -0.5f,  0.5f, -1, 0, 0,  1, 0,
-            -0.5f,  0.5f,  0.5f, -1, 0, 0,  1, 1,
-            -0.5f,  0.5f, -0.5f, -1, 0, 0,  0, 1
+            -0.5f, -0.5f, -0.5f,   -1,  0,  0,    0, 0,
+            -0.5f, -0.5f,  0.5f,   -1,  0,  0,    1, 0,
+            -0.5f,  0.5f,  0.5f,   -1,  0,  0,    1, 1,
+            -0.5f,  0.5f, -0.5f,   -1,  0,  0,    0, 1
         };
 
         int[] indices =
@@ -76,10 +71,10 @@ public static class MeshGenerator
             20, 21, 22, 22, 23, 20 
         };
 
-        return new(vertices, indices, new[] { pos, normal, tex });
+        return new(vertices, indices, VertexLayouts.Default3D);
     }
 
-    public static VAO GenUVSphere(uint stackCount, uint sectorCount)
+    public static VertexArray GenUVSphere(uint stackCount, uint sectorCount)
     {
         var vertices = new List<float>();
         
@@ -130,32 +125,25 @@ public static class MeshGenerator
                 }
             }
         }
-        
-        VertexAttributePointer pos = new(0, 3, 0);
-        VertexAttributePointer norm = new(1, 3, 3);
-        VertexAttributePointer tex = new(2, 2, 6);
 
-        return new(vertices.ToArray(), indices.ToArray(), new[] { pos,norm, tex });
+        return new(vertices.ToArray(), indices.ToArray(), VertexLayouts.Default3D);
     }
 
-    public static VAO GenPlane(float size = 1, ushort textureTiling = 1)
+    public static VertexArray GenPlane(float size = 1, ushort textureTiling = 1)
     {
-        VertexAttributePointer pos = new(0, 3, 0);
-        VertexAttributePointer normal = new(1, 3, 3);
-        VertexAttributePointer tex = new(2, 2, 6);
-        
         float[] vertices =
         {
-            size/2, 0, size/2, 0, 1, 0, -textureTiling,0,
-            size/2, 0, -size/2, 0, 1, 0, -textureTiling,-textureTiling,
-            -size/2, 0, -size/2, 0, 1, 0, 0,-textureTiling,
-            -size/2, 0, size/2, 0, 1, 0, 0,0,
+            //    Position          Normal                     UV
+             size/2, 0,  size/2,    0, 1, 0,     -textureTiling, 0,
+             size/2, 0, -size/2,    0, 1, 0,     -textureTiling,-textureTiling,
+            -size/2, 0, -size/2,    0, 1, 0,      0,            -textureTiling,
+            -size/2, 0,  size/2,    0, 1, 0,      0,             0,
         };
         int[] indices =
         {
             0, 1, 3,
             1, 2, 3
         };
-        return new(vertices, indices, new[] { pos, normal, tex });
+        return new(vertices, indices, VertexLayouts.Default3D);
     }
 }

@@ -1,12 +1,10 @@
 using MGL.GFX.Shaders;
-using MGL.GFX.VertexAttributes;
-using Silk.NET.OpenGL;
 
-namespace MGL.GFX.Models;
+namespace MGL.GFX._3D.Models;
 
-public class Mesh(VAO vao, int materialIndex)
+public class Mesh(VertexArray.VertexArray vertexArray, int materialIndex)
 {
-    public VAO VAO { get; set; } = vao;
+    public VertexArray.VertexArray VertexArray { get; set; } = vertexArray;
     public int MaterialIndex { get; set; } = materialIndex;
 
     public void Draw(Material[] materials)
@@ -28,6 +26,6 @@ public class Mesh(VAO vao, int materialIndex)
         if (material?.AOMap != null)
             ShaderProgram.Current.SetUniformTextureUnit("aoMap", material.AOMap,4);
         
-        VAO.Draw();
+        VertexArray.Draw();
     }
 }

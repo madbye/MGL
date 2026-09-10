@@ -1,4 +1,4 @@
-namespace MGL.GFX.VertexAttributes;
+namespace MGL.GFX.VertexArray;
 
 public readonly struct VertexAttributePointer(uint location, uint size, uint offset)
 {

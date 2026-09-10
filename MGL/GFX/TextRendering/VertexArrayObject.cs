@@ -1,7 +1,6 @@
-﻿using System;
-using Silk.NET.OpenGL;
+﻿using Silk.NET.OpenGL;
 
-namespace MGL.GFX.UI.TextRendering
+namespace MGL.GFX.TextRendering
 {
 	internal class VertexArrayObject: IDisposable
 	{

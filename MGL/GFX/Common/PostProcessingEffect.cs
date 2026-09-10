@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using MGL.GFX.Shaders;
 using MGL.GFX.Textures;
-using MGL.GFX.VertexAttributes;
 using MGL.Utils;
 
 namespace MGL.GFX.Common;
@@ -10,7 +9,7 @@ namespace MGL.GFX.Common;
 public class PostProcessingEffect
 {
     public ShaderProgram _program;
-    private VAO _vao;
+    private VertexArray.VertexArray _vertexArray;
     public Framebuffer Framebuffer { get; private set; }
     
     public PostProcessingEffect( Shader shader, TextureFilter textureFilter = TextureFilter.Linear)
@@ -25,7 +24,7 @@ public class PostProcessingEffect
 
         Framebuffer = new Framebuffer( 1280, 720, textureFilter);
 
-        _vao = MeshGenerator.GenQuad();
+        _vertexArray = MeshGenerator.GenQuad();
     }
 
     private uint width, height;
@@ -43,7 +42,7 @@ public class PostProcessingEffect
         
         _program.Bind();
         texture2D.Bind();
-        _vao.Draw();
+        _vertexArray.Draw();
         
         Framebuffer.EndFrame();
         RenderCommand.DepthTest = true;

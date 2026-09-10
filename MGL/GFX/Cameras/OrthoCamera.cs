@@ -3,7 +3,7 @@ using MGL.GFX.Shaders;
 
 namespace MGL.GFX.Common;
 
-public class OrthoCamera
+public class OrthoCamera : ICamera
 {
     public Vector3 Position { get; set; }
     public Quaternion Rotation { get; set; }
@@ -31,19 +31,11 @@ public class OrthoCamera
         return Matrix4x4.CreateOrthographic(viewWidth, Size, NearPlaneDistance, FarPlaneDistance);
     }
     
-    public Matrix4x4 GetViewMatrix()
+    public void LookAt(Vector3 target, Vector3? up = null)
     {
-        if (Matrix4x4.Invert(Matrix4x4.CreateFromQuaternion(Rotation) * Matrix4x4.CreateTranslation(Position), out Matrix4x4 viewMat))
-        {
-            return viewMat;
-        }
-        return Matrix4x4.Identity;
-    }
-    public void LookAt(Vector3 target, Vector3 up = default)
-    {
-        if (up == default) up = Vector3.UnitY;
+        up ??= Vector3.UnitY;
         
-        Matrix4x4 viewMatrix = Matrix4x4.CreateLookAt(Position, target, up);
+        Matrix4x4 viewMatrix = Matrix4x4.CreateLookAt(Position, target, (Vector3)up);
         if (Matrix4x4.Invert(viewMatrix, out Matrix4x4 invertedMat))
         {
             Matrix4x4.Decompose(invertedMat, out _, out Quaternion rotation, out _);
@@ -53,7 +45,7 @@ public class OrthoCamera
 
     public void SetMatricesToProgram(ShaderProgram program)
     {
-        program.SetUniform("view", GetViewMatrix());
+        program.SetUniform("view", ((ICamera)this).GetViewMatrix());
         program.SetUniform("proj", GetProjectionMatrix());
     }
 }

@@ -28,7 +28,7 @@ struct Light {
     float radius;
 };
 
-#define NR_LIGHTS 16
+#define NR_LIGHTS 32
 uniform Light lights[NR_LIGHTS];
 uniform int numLights;
 uniform vec3 viewPos;

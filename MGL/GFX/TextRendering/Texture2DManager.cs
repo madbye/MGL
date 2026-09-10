@@ -3,7 +3,7 @@ using FontStashSharp.Interfaces;
 using MGL.GFX.Textures;
 using Silk.NET.OpenGL;
 
-namespace MGL.GFX.UI.TextRendering
+namespace MGL.GFX.TextRendering
 {
 	internal class Texture2DManager : ITexture2DManager
 	{

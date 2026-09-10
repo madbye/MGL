@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Specialized;
-using System.IO;
 using System.Numerics;
 using FontStashSharp;
 using FontStashSharp.Interfaces;
@@ -9,7 +6,7 @@ using MGL.GFX.Shaders;
 using MGL.GFX.Textures;
 using Silk.NET.OpenGL;
 
-namespace MGL.GFX.UI.TextRendering;
+namespace MGL.GFX.TextRendering;
 
 public class TextRenderer
 {
@@ -172,18 +169,24 @@ public class TextRenderer
     }
 
     private static int width, height;
+
+    public Vector2 MeasureString(string text, TextStyle style, Vector2 scale)
+    {
+	    return style.Font.Handle.MeasureString(text, scale);
+    }
     public void DrawText(string text, TextStyle style, Vector2 position, Vector2? scale = null, float rotation = 0, Vector2? origin = null)
     {
 	    bool depth = RenderCommand.DepthTest;
 	    scale ??= Vector2.One;
 	    origin ??= Vector2.Zero;
-	    
-        var size = style.Font.Handle.MeasureString(text, scale);
         
         FSColor color = new FSColor(style.TextColor.R, style.TextColor.G, style.TextColor.B, style.TextColor.A);
         
 	    _renderer.Begin(width, height);
-        style.Font.Handle.DrawText(_renderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, effect:FontSystemEffect.Stroked, effectAmount: 1, characterSpacing: 1);
+	    if(style.Stroked)
+			style.Font.Handle.DrawText(_renderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, effect:FontSystemEffect.Stroked, effectAmount: style.StrokeThikness, characterSpacing: 1);
+	    else
+		    style.Font.Handle.DrawText(_renderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, characterSpacing: 1);
         _renderer.End();
         RenderCommand.DepthTest = depth;
     }

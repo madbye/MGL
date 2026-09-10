@@ -1,19 +1,17 @@
-using System;
-using System.Linq;
 using Silk.NET.OpenGL;
 
-namespace MGL.GFX.VertexAttributes;
+namespace MGL.GFX.VertexArray;
 
-public class VAO : IDisposable
+public class VertexArray : IDisposable
 {
     public uint Handle { get; private set; }
     public uint VBO { get; private set; } 
     public uint EBO { get; private set; } 
     public uint IndicesCount { get; private set; }
     
-    public VertexAttributePointer[] VertexLayout { get; private set; }
+    public VertexAttributePointer[] VertexLayout { get; set; }
 
-    public unsafe VAO(float[] vertices, int[] indices, VertexAttributePointer[] vertexLayout)
+    public unsafe VertexArray(float[] vertices, int[] indices, VertexAttributePointer[] vertexLayout)
     {
         IndicesCount = (uint)indices.Length;
 

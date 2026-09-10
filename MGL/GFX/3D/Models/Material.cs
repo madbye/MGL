@@ -1,7 +1,7 @@
 using System.Drawing;
 using MGL.GFX.Textures;
 
-namespace MGL.GFX.Models;
+namespace MGL.GFX._3D.Models;
 
 public class Material
 {

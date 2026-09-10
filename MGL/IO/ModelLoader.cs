@@ -4,12 +4,13 @@ using System.IO;
 using System.Numerics;
 using Assimp;
 using MGL.GFX;
+using MGL.GFX._3D.Models;
 using MGL.GFX.Common;
-using MGL.GFX.Models;
 using MGL.GFX.Textures;
-using MGL.GFX.VertexAttributes;
+using MGL.GFX.VertexArray;
 using Material = Assimp.Material;
 using Matrix4x4 = System.Numerics.Matrix4x4;
+using Mesh = MGL.GFX._3D.Models.Mesh;
 
 namespace MGL.IO;
 
@@ -26,7 +27,7 @@ public static class ModelLoader
 
             Scene scene = importer.ImportFile(path, flags);
             ModelNode root = ProcessNode(scene.RootNode, scene);
-            GFX.Models.Material[] materials = new GFX.Models.Material[scene.MaterialCount];
+            GFX._3D.Models.Material[] materials = new GFX._3D.Models.Material[scene.MaterialCount];
             for (int i = 0; i < materials.Length; i++)
             {
                 materials[i] = ProcessMaterial(scene.Materials[i], scene, Path.GetDirectoryName(path));
@@ -35,9 +36,9 @@ public static class ModelLoader
         }
     }
 
-    private static GFX.Models.Material ProcessMaterial(Material material, Scene scene, string directoryPath)
+    private static GFX._3D.Models.Material ProcessMaterial(Material material, Scene scene, string directoryPath)
     {
-        var result = new GFX.Models.Material();
+        var result = new GFX._3D.Models.Material();
         if (material.HasColorDiffuse)
         {
             Color4D сolor4d = material.ColorDiffuse;
@@ -98,7 +99,7 @@ public static class ModelLoader
     private static ModelNode ProcessNode(Node node, Scene scene)
     {
         var children = new List<ModelNode>();
-        var meshes = new List<GFX.Models.Mesh>();
+        var meshes = new List<Mesh>();
         foreach (int meshIndex in node.MeshIndices)
         {
             Assimp.Mesh mesh = scene.Meshes[meshIndex];
@@ -119,7 +120,7 @@ public static class ModelLoader
         return new ModelNode(node.Name, children, meshes, matrix);
     }
 
-    private static GFX.Models.Mesh ProcessMesh(Assimp.Mesh mesh, Scene scene)
+    private static Mesh ProcessMesh(Assimp.Mesh mesh, Scene scene)
     {
         var vertices = new List<float>();
         for (int i = 0; i < mesh.VertexCount; i++)
@@ -155,8 +156,8 @@ public static class ModelLoader
              }
         }
 
-        VAO vao = new VAO(vertices.ToArray(), mesh.GetIndices(), VertexLayouts.Default3D);
+        VertexArray vertexArray = new VertexArray(vertices.ToArray(), mesh.GetIndices(), VertexLayouts.Default3D);
         int material = mesh.MaterialIndex;
-        return new(vao, material);
+        return new(vertexArray, material);
     }
 }

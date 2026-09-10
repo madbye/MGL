@@ -1,7 +1,6 @@
-using System.Drawing;
 using System.Numerics;
 
-namespace MGL.GFX.Lights;
+namespace MGL.GFX._3D.Lights;
 
 public class SpotLight : Light
 {
