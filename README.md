@@ -54,9 +54,10 @@ while (!window.ShouldClose())
     RenderCommand.ClearColor(Color.CornflowerBlue);
     RenderCommand.ClearDepth();
     
-    DefaultShaders.GetUnlit().Use();
+    DefaultShaders.GetUnlit().Bind();
     DefaultShaders.GetUnlit().SetUniform("model", Matrix4x4.Identity);
-    camera.SetMatricesToProgram(DefaultShaders.GetUnlit());
+    
+    camera.SetVPMatricesToProgram(DefaultShaders.GetUnlit());
     
     texture.Bind();
     
