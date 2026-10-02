@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using MGL.GFX.Shaders;
 using MGL.GFX.Textures;
 using MGL.Utils;
@@ -12,17 +13,19 @@ public class PostProcessingEffect
     private VertexArray.VertexArray _vertexArray;
     public Framebuffer Framebuffer { get; private set; }
     
-    public PostProcessingEffect( Shader shader, TextureFilter textureFilter = TextureFilter.Linear)
+    public PostProcessingEffect(Shader shader, TextureFilter textureFilter = TextureFilter.Linear)
     {
         if (shader.Type != ShaderType.Fragment)
             throw new ArgumentException("Shader must be fragment");
         
-        string path = Path.Combine("data", "shaders", "quad.vert");
-        Shader vertShader = new Shader(File.ReadAllText(path), ShaderType.Vertex);
-        vertShader.Compile();
-        _program = new(new []{vertShader, shader});
+        using (var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(Path.Combine("MGL.Resources.Shaders.Blit.shader.vert"))))
+        {
+            var vert = new Shader(reader.ReadToEnd(), ShaderType.Vertex);
+            vert.Compile();
+            _program = new(new []{vert, shader});
+        }
 
-        Framebuffer = new Framebuffer( 1280, 720, textureFilter);
+        Framebuffer = new Framebuffer( 1, 1, textureFilter);
 
         _vertexArray = MeshGenerator.GenQuad();
     }
