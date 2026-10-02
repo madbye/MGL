@@ -1,6 +1,6 @@
 # MGL – Madbye's Game Library
 
-**MGL** is a lightweight C# game development library built on top of **OpenGL** and **Silk.NET**. It provides a simple abstraction for 3D rendering, shader management, asset loading, input, and basic text rendering.
+**MGL** is a lightweight C# game development library built on top of **OpenGL** and **Silk.NET**. It provides a simple abstraction for 3D and 2D rendering, shader management, asset loading, input, and basic text rendering.
 
 ---
 
