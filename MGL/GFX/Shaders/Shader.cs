@@ -22,22 +22,22 @@ public class Shader(string source, ShaderType shaderType) : IDisposable
         switch (Type)
         {
             case ShaderType.Vertex:
-                Handle = Env.Gl.CreateShader(GLEnum.VertexShader);
+                Handle = Window.Current.GlContext.CreateShader(GLEnum.VertexShader);
                 break;
             case ShaderType.Fragment:
-                Handle = Env.Gl.CreateShader(GLEnum.FragmentShader);
+                Handle = Window.Current.GlContext.CreateShader(GLEnum.FragmentShader);
                 break;
         }
-        Env.Gl.ShaderSource(Handle, Source);
+        Window.Current.GlContext.ShaderSource(Handle, Source);
         
-        Env.Gl.CompileShader(Handle);
-        Env.Gl.GetShader(Handle, ShaderParameterName.CompileStatus, out int status);
+        Window.Current.GlContext.CompileShader(Handle);
+        Window.Current.GlContext.GetShader(Handle, ShaderParameterName.CompileStatus, out int status);
         if (status != (int) GLEnum.True)
-            throw new Exception(Type + " shader failed to compile: " + Env.Gl.GetShaderInfoLog(Handle));
+            throw new Exception(Type + " shader failed to compile: " + Window.Current.GlContext.GetShaderInfoLog(Handle));
     }
 
     public void Dispose()
     {
-        Env.Gl.DeleteShader(Handle);
+        Window.Current.GlContext.DeleteShader(Handle);
     }
 }

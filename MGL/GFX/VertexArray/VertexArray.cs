@@ -17,43 +17,43 @@ public class VertexArray : IDisposable
 
         this.VertexLayout = vertexLayout;
 
-        Handle = Env.Gl.GenVertexArray();
-        Env.Gl.BindVertexArray(Handle);
+        Handle = Window.Current.GlContext.GenVertexArray();
+        Window.Current.GlContext.BindVertexArray(Handle);
 
-        VBO = Env.Gl.GenBuffer();
-        Env.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, VBO);
+        VBO = Window.Current.GlContext.GenBuffer();
+        Window.Current.GlContext.BindBuffer(BufferTargetARB.ArrayBuffer, VBO);
         fixed (float* buf = vertices)
-            Env.Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(vertices.Length * sizeof(float)), buf, BufferUsageARB.StaticDraw);
+            Window.Current.GlContext.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(vertices.Length * sizeof(float)), buf, BufferUsageARB.StaticDraw);
         
-        EBO = Env.Gl.GenBuffer();
-        Env.Gl.BindBuffer(BufferTargetARB.ElementArrayBuffer, EBO);
+        EBO = Window.Current.GlContext.GenBuffer();
+        Window.Current.GlContext.BindBuffer(BufferTargetARB.ElementArrayBuffer, EBO);
         fixed (int* buf = indices)
-            Env.Gl.BufferData(BufferTargetARB.ElementArrayBuffer, (nuint)(indices.Length * sizeof(uint)), buf, BufferUsageARB.StaticDraw);
+            Window.Current.GlContext.BufferData(BufferTargetARB.ElementArrayBuffer, (nuint)(indices.Length * sizeof(uint)), buf, BufferUsageARB.StaticDraw);
 
         uint stride = (uint)vertexLayout.Sum(s => s.Size) * sizeof(float);
         
         foreach (var i in vertexLayout)
         {
-            Env.Gl.EnableVertexAttribArray(i.Location);
-            Env.Gl.VertexAttribPointer(i.Location, (int)i.Size, VertexAttribPointerType.Float, false, stride, (void*)(i.Offset * sizeof(float)));
+            Window.Current.GlContext.EnableVertexAttribArray(i.Location);
+            Window.Current.GlContext.VertexAttribPointer(i.Location, (int)i.Size, VertexAttribPointerType.Float, false, stride, (void*)(i.Offset * sizeof(float)));
         }
         
-        Env.Gl.BindVertexArray(0);
+        Window.Current.GlContext.BindVertexArray(0);
     }
     
     public unsafe void Draw(PrimitiveType primitiveType = PrimitiveType.Triangles, TriangleFace triangleFace = TriangleFace.Front)
     {
-        Env.Gl.BindVertexArray(Handle);
-        Env.Gl.CullFace(triangleFace);
-        Env.Gl.DrawElements(primitiveType, IndicesCount, DrawElementsType.UnsignedInt,(void*) 0);
-        Env.Gl.BindVertexArray(0);
-        Env.Gl.CullFace(TriangleFace.Front);
+        Window.Current.GlContext.BindVertexArray(Handle);
+        Window.Current.GlContext.CullFace(triangleFace);
+        Window.Current.GlContext.DrawElements(primitiveType, IndicesCount, DrawElementsType.UnsignedInt,(void*) 0);
+        Window.Current.GlContext.BindVertexArray(0);
+        Window.Current.GlContext.CullFace(TriangleFace.Front);
     }
     
     public void Dispose()
     {
-        Env.Gl.DeleteVertexArray(Handle);
-        Env.Gl.DeleteBuffer(VBO);
-        Env.Gl.DeleteBuffer(EBO);
+        Window.Current.GlContext.DeleteVertexArray(Handle);
+        Window.Current.GlContext.DeleteBuffer(VBO);
+        Window.Current.GlContext.DeleteBuffer(EBO);
     }
 }

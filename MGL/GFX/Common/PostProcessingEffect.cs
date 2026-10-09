@@ -35,9 +35,9 @@ public class PostProcessingEffect
     {
         if (texture2D.Width != width || texture2D.Height != height)
         {
-            width = (uint)texture2D.Width;
-            height = (uint)texture2D.Height;
-            Framebuffer.Resize((uint)texture2D.Width, (uint)texture2D.Height);
+            width = texture2D.Width;
+            height = texture2D.Height;
+            Framebuffer.Resize(texture2D.Width, texture2D.Height);
         }
         
         RenderCommand.DepthTest = false;

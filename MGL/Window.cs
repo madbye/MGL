@@ -1,3 +1,4 @@
+using MGL.GFX.Shaders;
 using MGL.Input;
 using Silk.NET.Input;
 using Silk.NET.Maths;
@@ -9,7 +10,9 @@ namespace MGL;
 public class Window
 {
     private IWindow _windowHandle;
-    private GL _gl;
+    public GL GlContext { get; private set; }
+    public static Window Current { get; set; }
+    internal WindowShaders WindowShaders { get; private set; }
     
     public event Action<uint, uint>? OnResize;
 
@@ -25,16 +28,16 @@ public class Window
         _windowHandle.Resize += (d =>
         {
             OnResize?.Invoke((uint)d.X, (uint)d.Y);
-            Env.Gl.Viewport(0, 0, (uint)d.X, (uint)d.Y);
+            GlContext.Viewport(0, 0, (uint)d.X, (uint)d.Y);
         });
-           
     }
     
     public void Initialize()
     { 
         _windowHandle.Initialize();
-        _gl = _windowHandle.CreateOpenGL();
-        Bind();
+        GlContext = _windowHandle.CreateOpenGL();
+        MakeCurrent();
+        WindowShaders = new WindowShaders();
     }
 
     public InputContext GetInputContext() => new(_windowHandle.CreateInput());
@@ -42,7 +45,12 @@ public class Window
     public void DoEvents() => _windowHandle.DoEvents();
     public bool ShouldClose() => _windowHandle.IsClosing;
     public void Close() => _windowHandle.Close();
-    public void Bind() => Env.Gl = _gl;
+
+    public void MakeCurrent()
+    {
+        _windowHandle.MakeCurrent();
+        Current = this;
+    }
     
     public (uint, uint) GetSize()
     {

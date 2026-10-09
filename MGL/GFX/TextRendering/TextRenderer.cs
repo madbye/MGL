@@ -32,7 +32,7 @@ public class TextRenderer
 
 		public unsafe Renderer(ShaderProgram program)
 		{
-			_textureManager = new Texture2DManager(Env.Gl);
+			_textureManager = new Texture2DManager(Window.Current.GlContext);
 
 			_vertexBuffer = new BufferObject<VertexPositionColorTexture>(MAX_VERTICES, BufferTargetARB.ArrayBuffer, true);
 			_indexBuffer = new BufferObject<short>(indexData.Length, BufferTargetARB.ElementArrayBuffer, false);
@@ -72,10 +72,10 @@ public class TextRenderer
 
 		internal void Begin(int width, int height)
 		{
-			Env.Gl.Clear(ClearBufferMask.DepthBufferBit);
+			Window.Current.GlContext.Clear(ClearBufferMask.DepthBufferBit);
 			
-			Env.Gl.Disable(EnableCap.DepthTest);
-			Env.Gl.Enable(EnableCap.Blend);
+			Window.Current.GlContext.Disable(EnableCap.DepthTest);
+			Window.Current.GlContext.Enable(EnableCap.Blend);
 
 			_shader.Bind();
 			_shader.SetUniform("TextureSampler", 0);
@@ -84,10 +84,11 @@ public class TextRenderer
 			_shader.SetUniform("MatrixTransform", transform);
 
 			_vao.Bind();
+			
 			_indexBuffer.Bind();
 			_vertexBuffer.Bind();
 			
-			Env.Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+			Window.Current.GlContext.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 		}
 
 		public void DrawQuad(object texture, ref VertexPositionColorTexture topLeft, ref VertexPositionColorTexture topRight, ref VertexPositionColorTexture bottomLeft, ref VertexPositionColorTexture bottomRight)
@@ -122,7 +123,7 @@ public class TextRenderer
 			var texture = (Texture2D)_lastTexture;
 			texture.Bind();
 
-			Env.Gl.DrawElements(PrimitiveType.Triangles, (uint)(_vertexIndex * 6 / 4), DrawElementsType.UnsignedShort, null);
+			Window.Current.GlContext.DrawElements(PrimitiveType.Triangles, (uint)(_vertexIndex * 6 / 4), DrawElementsType.UnsignedShort, null);
 			_vertexIndex = 0;
 		}
 
@@ -143,7 +144,7 @@ public class TextRenderer
 
 		public void Resize(int width, int height)
 		{
-			Env.Gl.Viewport(0,0,(uint)width, (uint)height);
+			Window.Current.GlContext.Viewport(0,0,(uint)width, (uint)height);
     
 			_shader.Bind();
 			var transform = Matrix4x4.CreateOrthographicOffCenter(0, width, height, 0, 0, -1);
@@ -177,18 +178,23 @@ public class TextRenderer
     public void DrawText(string text, TextStyle style, Vector2 position, Vector2? scale = null, float rotation = 0, Vector2? origin = null)
     {
 	    bool depth = RenderCommand.DepthTest;
+	    bool blend = RenderCommand.Blend;
+	    
 	    scale ??= Vector2.One;
 	    origin ??= Vector2.Zero;
         
         FSColor color = new FSColor(style.TextColor.R, style.TextColor.G, style.TextColor.B, style.TextColor.A);
         
 	    _renderer.Begin(width, height);
+	    
 	    if(style.Stroked)
 			style.Font.Handle.DrawText(_renderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, effect:FontSystemEffect.Stroked, effectAmount: style.StrokeThikness, characterSpacing: 1);
 	    else
 		    style.Font.Handle.DrawText(_renderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, characterSpacing: 1);
         _renderer.End();
+        
         RenderCommand.DepthTest = depth;
+        RenderCommand.Blend = blend;
     }
 
     public void Resize(uint width, uint height)

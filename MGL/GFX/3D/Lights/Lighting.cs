@@ -25,7 +25,7 @@ public static class Lighting
                     program.SetUniform($"lights[{i}].constant", pointLight.Constant);
                     program.SetUniform($"lights[{i}].linear", pointLight.Linear);
                     program.SetUniform($"lights[{i}].quadratic", pointLight.Quadratic);
-                    program.SetUniform($"lights[{i}].radius", pointLight.Radius); // Если добавил радиус для отсечения
+                    program.SetUniform($"lights[{i}].radius", pointLight.Radius); 
                     break;
         
                 case SpotLight spotLight:
@@ -38,7 +38,7 @@ public static class Lighting
                     program.SetUniform($"lights[{i}].quadratic", spotLight.Quadratic);
                     program.SetUniform($"lights[{i}].cutOff", spotLight.CutOff);
                     program.SetUniform($"lights[{i}].outerCutOff", spotLight.OuterCutOff);
-                    program.SetUniform($"lights[{i}].radius", spotLight.Radius); // Тоже пригодится
+                    program.SetUniform($"lights[{i}].radius", spotLight.Radius); 
                     break;
             }
         }
@@ -46,6 +46,10 @@ public static class Lighting
 
     public static void SetAmbientStrength(float value, ShaderProgram shaderProgram)
     {
-        shaderProgram.SetUniform("ambientStrength", 0.5f);
+        shaderProgram.SetUniform("ambientStrength", value);
+    }
+    public static void SetSpecularStrength(float value, ShaderProgram shaderProgram)
+    {
+        shaderProgram.SetUniform("specularStrength", value);
     }
 }

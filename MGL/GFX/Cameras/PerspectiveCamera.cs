@@ -24,6 +24,13 @@ public class PerspectiveCamera : ICamera
         FarPlaneDistance = far;
     }
     
+    public Matrix4x4 GetViewMatrix()
+    {
+        Matrix4x4 rotation = Matrix4x4.CreateFromQuaternion(Rotation);
+        Matrix4x4 translation = Matrix4x4.CreateTranslation(-Position);
+        return translation * rotation;
+    }
+    
     public Matrix4x4 GetProjectionMatrix()
     {
         return Matrix4x4.CreatePerspectiveFieldOfView(Size * (MathF.PI / 180f), (float)Width/Height, NearPlaneDistance, FarPlaneDistance);
@@ -31,19 +38,22 @@ public class PerspectiveCamera : ICamera
     
     public void LookAt(Vector3 target, Vector3? up = null)
     {
-        up = Vector3.UnitY;
+        up ??= Vector3.UnitY;
         
-        Matrix4x4 viewMatrix = Matrix4x4.CreateLookAt(Position, target, (Vector3)up);
-        if (Matrix4x4.Invert(viewMatrix, out Matrix4x4 invertedMat))
-        {
-            Matrix4x4.Decompose(invertedMat, out _, out Quaternion rotation, out _);
-            Rotation = rotation;
-        }
+        Vector3 forward = Vector3.Normalize(target - Position);
+        Vector3 right = Vector3.Normalize(Vector3.Cross((Vector3)up, forward));
+        Vector3 actualUp = Vector3.Cross(forward, right);
+        
+        Rotation = Quaternion.CreateFromRotationMatrix(Matrix4x4.CreateLookAt(Position, target, actualUp));
     }
 
     public void SetVPMatricesToProgram(ShaderProgram program)
     {
         program.SetUniform("view", ((ICamera)this).GetViewMatrix());
         program.SetUniform("proj", ((ICamera)this).GetProjectionMatrix());
+    }
+    public void SetPositionToProgram(ShaderProgram program)
+    {
+        program.SetUniform("viewPos", Position);
     }
 }

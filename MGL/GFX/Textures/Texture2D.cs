@@ -21,61 +21,61 @@ public class Texture2D
         Width = width;
         Height = height;
 
-        Handle = Env.Gl.GenTexture();
+        Handle = Window.Current.GlContext.GenTexture();
 
         Bind();
 
-        Env.Gl.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
+        Window.Current.GlContext.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
         
-        Env.Gl.TexImage2D(
+        Window.Current.GlContext.TexImage2D(
             TextureTarget.Texture2D,
             0,
             InternalFormat.Rgba8, 
-            (uint)width,
-            (uint)height,
+            width,
+            height,
             0,
             PixelFormat.Rgba,
             PixelType.UnsignedByte,
             null                
         );
         
-        Env.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-        Env.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+        Window.Current.GlContext.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+        Window.Current.GlContext.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         
-        Env.Gl.BindTexture(TextureTarget.Texture2D, 0);
+        Window.Current.GlContext.BindTexture(TextureTarget.Texture2D, 0);
     }
 
-    public Texture2D(uint handle, uint width, uint height)
+    public Texture2D(uint handle)
     {
         Handle = handle;
-        Width = width;
-        Height = height;
+        Width = (uint)Window.Current.GlContext.GetTextureParameter(handle, GetTextureParameter.TextureWidth);
+        Height = (uint)Window.Current.GlContext.GetTextureParameter(handle, GetTextureParameter.TextureHeight);
     }
 
     public static unsafe Texture2D FromImage(Image image, TextureFilter textureFilter, bool enableMipmaps)
     {
-        uint handle = Env.Gl.GenTexture();
+        uint handle = Window.Current.GlContext.GenTexture();
 
-        Env.Gl.BindTexture(TextureTarget.Texture2D, handle);
+        Window.Current.GlContext.BindTexture(TextureTarget.Texture2D, handle);
 
-        Env.Gl.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
+        Window.Current.GlContext.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
         
         switch (image.Channels)
         {
             case 1:
                 fixed (byte* ptr = image.PixelData)
-                    Env.Gl.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Red, (uint)image.Width,
-                        (uint)image.Height, 0, PixelFormat.Red, PixelType.UnsignedByte, ptr);
+                    Window.Current.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Red, image.Width,
+                        image.Height, 0, PixelFormat.Red, PixelType.UnsignedByte, ptr);
                 break;
             case 3:
                 fixed (byte* ptr = image.PixelData)
-                    Env.Gl.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgb, (uint)image.Width,
-                        (uint)image.Height, 0, PixelFormat.Rgb, PixelType.UnsignedByte, ptr);
+                    Window.Current.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgb, image.Width,
+                        image.Height, 0, PixelFormat.Rgb, PixelType.UnsignedByte, ptr);
                 break;
             case 4:
                 fixed (byte* ptr = image.PixelData)
-                    Env.Gl.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba, (uint)image.Width,
-                        (uint)image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, ptr);
+                    Window.Current.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba, image.Width,
+                        image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, ptr);
                 break;
         }
 
@@ -86,23 +86,23 @@ public class Texture2D
 
         var magFilter = textureFilter == TextureFilter.Linear ? TextureMagFilter.Linear : TextureMagFilter.Nearest;
         
-        Env.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-        Env.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-        Env.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)minFilter);
-        Env.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)magFilter);
+        Window.Current.GlContext.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+        Window.Current.GlContext.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+        Window.Current.GlContext.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)minFilter);
+        Window.Current.GlContext.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)magFilter);
     
         if(enableMipmaps)
-            Env.Gl.GenerateMipmap(TextureTarget.Texture2D);
+            Window.Current.GlContext.GenerateMipmap(TextureTarget.Texture2D);
         
-        Env.Gl.BindTexture(TextureTarget.Texture2D, 0);
+        Window.Current.GlContext.BindTexture(TextureTarget.Texture2D, 0);
 
-        return new(handle, image.Height, image.Width);
+        return new(handle);
     }
 
-    public void Bind(Silk.NET.OpenGL.TextureUnit textureSlot = Silk.NET.OpenGL.TextureUnit.Texture0)
+    public void Bind(TextureUnit textureSlot = TextureUnit.Texture0)
     {
-        Env.Gl.ActiveTexture(textureSlot);
-        Env.Gl.BindTexture(TextureTarget.Texture2D, Handle);
+        Window.Current.GlContext.ActiveTexture(textureSlot);
+        Window.Current.GlContext.BindTexture(TextureTarget.Texture2D, Handle);
     }
     
     public unsafe void SetData(Rectangle bounds, byte[] data)
@@ -110,7 +110,7 @@ public class Texture2D
         Bind();
         fixed (byte* ptr = data)
         {
-            Env.Gl.TexSubImage2D(
+            Window.Current.GlContext.TexSubImage2D(
                 target: TextureTarget.Texture2D,
                 level: 0,
                 xoffset: bounds.Left,

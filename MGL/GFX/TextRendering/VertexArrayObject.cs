@@ -16,23 +16,23 @@ namespace MGL.GFX.TextRendering
 
 			_stride = stride;
 
-			Env.Gl.GenVertexArrays(1, out _handle);
+			Window.Current.GlContext.GenVertexArrays(1, out _handle);
 		}
 
 		public void Dispose()
 		{
-			Env.Gl.DeleteVertexArray(_handle);
+			Window.Current.GlContext.DeleteVertexArray(_handle);
 		}
 
 		public void Bind()
 		{
-			Env.Gl.BindVertexArray(_handle);
+			Window.Current.GlContext.BindVertexArray(_handle);
 		}
 
 		public unsafe void VertexAttribPointer(int location, int size, VertexAttribPointerType type, bool normalized, int offset)
 		{
-			Env.Gl.EnableVertexAttribArray((uint)location);
-			Env.Gl.VertexAttribPointer((uint)location, size, type, normalized, (uint)_stride, (void*)offset);
+			Window.Current.GlContext.EnableVertexAttribArray((uint)location);
+			Window.Current.GlContext.VertexAttribPointer((uint)location, size, type, normalized, (uint)_stride, (void*)offset);
 		}
 	}
 }

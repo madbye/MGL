@@ -14,22 +14,22 @@ namespace MGL.GFX.TextRendering
 			_bufferType = bufferType;
 			_size = size;
 
-			_handle = Env.Gl.GenBuffer();
+			_handle = Window.Current.GlContext.GenBuffer();
 			
 			Bind();
 
 			var elementSizeInBytes = Marshal.SizeOf<T>();
-			Env.Gl.BufferData(bufferType, (nuint)(size * elementSizeInBytes), null, isDynamic ? BufferUsageARB.StreamDraw : BufferUsageARB.StaticDraw);
+			Window.Current.GlContext.BufferData(bufferType, (nuint)(size * elementSizeInBytes), null, isDynamic ? BufferUsageARB.StreamDraw : BufferUsageARB.StaticDraw);
 		}
 
 		public void Bind()
 		{
-			Env.Gl.BindBuffer(_bufferType, _handle);
+			Window.Current.GlContext.BindBuffer(_bufferType, _handle);
 		}
 
 		public void Dispose()
 		{
-			Env.Gl.DeleteBuffer(_handle);
+			Window.Current.GlContext.DeleteBuffer(_handle);
 		}
 
 		public unsafe void SetData(T[] data, int startIndex, int elementCount)
@@ -40,7 +40,7 @@ namespace MGL.GFX.TextRendering
 			{
 				var elementSizeInBytes = sizeof(T);
 
-				Env.Gl.BufferSubData(_bufferType, 0, (nuint)(elementCount * elementSizeInBytes), dataPtr);
+				Window.Current.GlContext.BufferSubData(_bufferType, 0, (nuint)(elementCount * elementSizeInBytes), dataPtr);
 			}
 		}
 	}

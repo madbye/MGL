@@ -5,46 +5,57 @@ namespace MGL.GFX.Common;
 
 public static class RenderCommand
 {
+    private static bool _depthTest = true;
+    
     public static bool DepthTest
     {
-        get;
+        get => _depthTest;
         set
         {
+            _depthTest = value;
             if (value)
-                Env.Gl.Enable(EnableCap.DepthTest);
+                Window.Current.GlContext.Enable(EnableCap.DepthTest);
             else
-                Env.Gl.Disable(EnableCap.DepthTest);
+                Window.Current.GlContext.Disable(EnableCap.DepthTest);
         }
-    } = true;
+    }
+    
+    private static bool _blend = true;
+    
     public static bool Blend
     {
-        get;
+        get => _blend;
         set
         {
+            _blend = value;
             if (value)
-                Env.Gl.Enable(EnableCap.Blend);
+                Window.Current.GlContext.Enable(EnableCap.Blend);
             else
-                Env.Gl.Disable(EnableCap.Blend);
+                Window.Current.GlContext.Disable(EnableCap.Blend);
         }
-    } = true;
+    }
+    
+    private static bool _multisample = true;
+    
     public static bool Multisample
     {
-        get;
+        get => _multisample;
         set
         {
+            _multisample = value;
             if (value)
-                Env.Gl.Enable(EnableCap.Multisample);
+                Window.Current.GlContext.Enable(EnableCap.Multisample);
             else
-                Env.Gl.Disable(EnableCap.Multisample);
+                Window.Current.GlContext.Disable(EnableCap.Multisample);
         }
-    } = true;
+    }
     public static void ClearColor(Color color)
     {
-        Env.Gl.ClearColor(color);
-        Env.Gl.Clear(ClearBufferMask.ColorBufferBit);
+        Window.Current.GlContext.ClearColor(color);
+        Window.Current.GlContext.Clear(ClearBufferMask.ColorBufferBit);
     }
     public static void ClearDepth()
     {
-        Env.Gl.Clear(ClearBufferMask.DepthBufferBit);
+        Window.Current.GlContext.Clear(ClearBufferMask.DepthBufferBit);
     }
 }
