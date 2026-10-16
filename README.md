@@ -20,50 +20,76 @@
 ## 🕹️ Example
 
 ```csharp
-using System.Drawing;
 using System.Numerics;
+using System.Drawing;
 using MGL;
-using MGL.GFX.Common;
-using MGL.GFX.Shaders;
-using MGL.GFX.Textures;
-using MGL.IO;
+using MGL.Graphics;
 using MGL.Utils;
 
-var window = new Window(1280, 720, "Window");
+// 1. Initialize Window & Renderer
+var window = new Window(1280u, 720u, "MGL Demo");
 window.Initialize();
 
-var vao = MeshGenerator.GenCube();
-var texture = Texture2D.FromImage(ImageLoader.GenCheckerboard(Color.Magenta, Color.Black, 8), TextureFilter.Nearest, false);
+var renderer = window.CreateRenderer();
 
-var camera = new PerspectiveCamera(new(10), Quaternion.Identity, 1280, 720, 45, 0.1f, 1000);
-
+// 2. Setup Camera
+var camera = new PerspectiveCamera(
+    position: new Vector3(3f, 3f, 3f),
+    Quaternion.Identity,
+    width: 1280,
+    height: 720,
+    fov: 60f,
+    0.1f,
+    100f
+);
 camera.LookAt(Vector3.Zero);
 
-RenderCommand.DepthTest = true;
+// 3. Load Resources (Mesh, Texture, Shader)
+using var vao = VertexArray.FromCommonMesh(renderer, MeshGenerator.GenCube());
 
-window.OnResize += (width, height) =>
+using var texture = Texture2D.FromImage(
+    renderer, 
+    CheckerboardGenerator.GenCheckerboard(Color.Magenta, Color.Black, 4), 
+    TextureFilter.Nearest, 
+    false
+);
+texture.Bind();
+
+var shader = renderer.DefaultShaders.GetUnlit();
+shader.Bind();
+shader.SetUniform("model", Matrix4x4.Identity);
+
+renderer.Enable(EnableCap.DepthTest);
+
+// 4. Handle Window Resize
+window.OnResize += (newWidth, newHeight) =>
 {
-    camera.Width = width;
-    camera.Height = height;
+    renderer.Viewport(newWidth, newHeight);
+    
+    camera.Width = newWidth;
+    camera.Height = newHeight;
+    camera.SetVPMatricesToProgram(shader);
 };
 
+// 5. Main Render Loop
 while (!window.ShouldClose())
 {
     window.DoEvents();
+
+    // Clear screen buffers
+    renderer.ClearColor(Color.CornflowerBlue);
+    renderer.ClearDepth();
     
-    RenderCommand.ClearColor(Color.CornflowerBlue);
-    RenderCommand.ClearDepth();
-    
-    DefaultShaders.GetUnlit().Bind();
-    DefaultShaders.GetUnlit().SetUniform("model", Matrix4x4.Identity);
-    
-    camera.SetVPMatricesToProgram(DefaultShaders.GetUnlit());
-    
-    texture.Bind();
-    
+    // Draw geometry
+    shader.Bind();
     vao.Draw();
     
     window.SwapBuffers();
 }
+
+// 6. Cleanup Resources
+vao.Dispose();
+texture.Dispose();
+shader.Dispose();
 
 ```
