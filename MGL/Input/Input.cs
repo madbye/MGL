@@ -18,9 +18,14 @@ public class InputContext
     internal InputContext(IInputContext inputContext)
     {
         _inputContext = inputContext;
-        _inputContext.Mice[0].Click += (m, button, position) => Click?.Invoke(position, (MouseButton)button);
-        _inputContext.Mice[0].DoubleClick += (m, button, position) => DoubleClick?.Invoke(position, (MouseButton)button);
-        _inputContext.Mice[0].MouseMove += (m, vec) => MouseMove?.Invoke(vec);
+
+        foreach (var mouse in inputContext.Mice)
+        {
+            mouse.Click += (m, button, position) => Click?.Invoke(position, (MouseButton)button);
+            mouse.DoubleClick += (m, button, position) => DoubleClick?.Invoke(position, (MouseButton)button);
+            mouse.MouseMove += (m, vec) => MouseMove?.Invoke(vec);
+        }
+        
         foreach (var keyboard in _inputContext.Keyboards)
         {
             keyboard.KeyDown += (k, key, arg3) => KeyDown?.Invoke((KeyboardKey)key);

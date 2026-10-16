@@ -1,64 +1,66 @@
-using System;
-using System.Collections.Generic;
-using MGL.GFX;
-using MGL.GFX.VertexArray;
+using System.Numerics;
+using MGL.Common;
 
 namespace MGL.Utils;
 
 public static class MeshGenerator
 {
-    public static VertexArray GenQuad(float width = 1f, float height = 1f)
+    public static CommonMesh GenQuad(float width = 1f, float height = 1f)
     {
-        float[] vertices =
+        Vertex[] vertices =
         {
-            //     Position            Normal         UV
-            -width, -height,  0f,    0f, 0f, 1f,    0f, 0f,
-             width, -height,  0f,    0f, 0f, 1f,    1f, 0f,
-             width,  height,  0f,    0f, 0f, 1f,    1f, 1f,
-             -width,  height,  0f,    0f, 0f, 1f,    0f, 1f,
+            new Vertex(new(-width, -height, 0f), new Vector3(0f, 0f, 1f), new Vector2(0f, 0f)),
+            new Vertex(new( width, -height, 0f), new Vector3(0f, 0f, 1f), new Vector2(1f, 0f)),
+            new Vertex(new( width,  height, 0f), new Vector3(0f, 0f, 1f), new Vector2(1f, 1f)),
+            new Vertex(new(-width,  height, 0f), new Vector3(0f, 0f, 1f), new Vector2(0f, 1f))
         };
         int[] indices =
         {
             0, 1, 3,
             1, 2, 3
         };
-        return new(vertices, indices, VertexLayouts.Default3D);
+        return new(vertices, indices);
     }
     
-    public static VertexArray GenCube()
+    public static CommonMesh GenCube()
     {
-        float[] vertices =
+        Vertex[] vertices =
         {
-            //    Position            Normal       UV
-            -0.5f, -0.5f,  0.5f,    0,  0,  1,    0, 0,
-             0.5f, -0.5f,  0.5f,    0,  0,  1,    1, 0,
-             0.5f,  0.5f,  0.5f,    0,  0,  1,    1, 1,
-            -0.5f,  0.5f,  0.5f,    0,  0,  1,    0, 1,
-    
-            -0.5f, -0.5f, -0.5f,    0,  0, -1,    1, 0,
-             0.5f, -0.5f, -0.5f,    0,  0, -1,    0, 0,
-             0.5f,  0.5f, -0.5f,    0,  0, -1,    0, 1,
-            -0.5f,  0.5f, -0.5f,    0,  0, -1,    1, 1,
-    
-            -0.5f,  0.5f, -0.5f,    0,  1,  0,    0, 1,
-             0.5f,  0.5f, -0.5f,    0,  1,  0,    1, 1,
-             0.5f,  0.5f,  0.5f,    0,  1,  0,    1, 0,
-            -0.5f,  0.5f,  0.5f,    0,  1,  0,    0, 0,
+            // Front face
+            new Vertex(new(-0.5f, -0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(0f, 0f)),
+            new Vertex(new( 0.5f, -0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(1f, 0f)),
+            new Vertex(new( 0.5f,  0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(1f, 1f)),
+            new Vertex(new(-0.5f,  0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(0f, 1f)),
 
-            -0.5f, -0.5f, -0.5f,    0, -1,  0,    0, 0,
-             0.5f, -0.5f, -0.5f,    0, -1,  0,    1, 0,
-             0.5f, -0.5f,  0.5f,    0, -1,  0,    1, 1,
-            -0.5f, -0.5f,  0.5f,    0, -1,  0,    0, 1,
+            // Back face
+            new Vertex(new(-0.5f, -0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(1f, 0f)),
+            new Vertex(new( 0.5f, -0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(0f, 0f)),
+            new Vertex(new( 0.5f,  0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(0f, 1f)),
+            new Vertex(new(-0.5f,  0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(1f, 1f)),
 
-             0.5f, -0.5f, -0.5f,    1,  0,  0,    1, 0,
-             0.5f, -0.5f,  0.5f,    1,  0,  0,    0, 0,
-             0.5f,  0.5f,  0.5f,    1,  0,  0,    0, 1,
-             0.5f,  0.5f, -0.5f,    1,  0,  0,    1, 1,
+            // Top face
+            new Vertex(new(-0.5f,  0.5f, -0.5f), new Vector3(0f, 1f, 0f), new Vector2(0f, 1f)),
+            new Vertex(new( 0.5f,  0.5f, -0.5f), new Vector3(0f, 1f, 0f), new Vector2(1f, 1f)),
+            new Vertex(new( 0.5f,  0.5f,  0.5f), new Vector3(0f, 1f, 0f), new Vector2(1f, 0f)),
+            new Vertex(new(-0.5f,  0.5f,  0.5f), new Vector3(0f, 1f, 0f), new Vector2(0f, 0f)),
 
-            -0.5f, -0.5f, -0.5f,   -1,  0,  0,    0, 0,
-            -0.5f, -0.5f,  0.5f,   -1,  0,  0,    1, 0,
-            -0.5f,  0.5f,  0.5f,   -1,  0,  0,    1, 1,
-            -0.5f,  0.5f, -0.5f,   -1,  0,  0,    0, 1
+            // Bottom face
+            new Vertex(new(-0.5f, -0.5f, -0.5f), new Vector3(0f, -1f, 0f), new Vector2(0f, 0f)),
+            new Vertex(new( 0.5f, -0.5f, -0.5f), new Vector3(0f, -1f, 0f), new Vector2(1f, 0f)),
+            new Vertex(new( 0.5f, -0.5f,  0.5f), new Vector3(0f, -1f, 0f), new Vector2(1f, 1f)),
+            new Vertex(new(-0.5f, -0.5f,  0.5f), new Vector3(0f, -1f, 0f), new Vector2(0f, 1f)),
+
+            // Right face
+            new Vertex(new( 0.5f, -0.5f, -0.5f), new Vector3(1f, 0f, 0f), new Vector2(1f, 0f)),
+            new Vertex(new( 0.5f, -0.5f,  0.5f), new Vector3(1f, 0f, 0f), new Vector2(0f, 0f)),
+            new Vertex(new( 0.5f,  0.5f,  0.5f), new Vector3(1f, 0f, 0f), new Vector2(0f, 1f)),
+            new Vertex(new( 0.5f,  0.5f, -0.5f), new Vector3(1f, 0f, 0f), new Vector2(1f, 1f)),
+
+            // Left face
+            new Vertex(new(-0.5f, -0.5f, -0.5f), new Vector3(-1f, 0f, 0f), new Vector2(0f, 0f)),
+            new Vertex(new(-0.5f, -0.5f,  0.5f), new Vector3(-1f, 0f, 0f), new Vector2(1f, 0f)),
+            new Vertex(new(-0.5f,  0.5f,  0.5f), new Vector3(-1f, 0f, 0f), new Vector2(1f, 1f)),
+            new Vertex(new(-0.5f,  0.5f, -0.5f), new Vector3(-1f, 0f, 0f), new Vector2(0f, 1f))
         };
 
         int[] indices =
@@ -71,42 +73,40 @@ public static class MeshGenerator
             20, 21, 22, 22, 23, 20 
         };
 
-        return new(vertices, indices, VertexLayouts.Default3D);
+        return new(vertices, indices);
     }
 
-    public static VertexArray GenUVSphere(uint stackCount, uint sectorCount)
+    public static CommonMesh GenUVSphere(uint stackCount, uint sectorCount)
     {
-        var vertices = new List<float>();
-        
+        var vertices = new List<Vertex>();
+    
         for (int i = 0; i <= stackCount; ++i)
         {
             float stackAngle = MathF.PI / 2 - i * (MathF.PI / stackCount); 
             float xy = MathF.Cos(stackAngle);
-            float z = MathF.Sin(stackAngle);
+            float y = MathF.Sin(stackAngle);
 
             for (int j = 0; j <= sectorCount; ++j)
             {
                 float sectorAngle = j * (2 * MathF.PI / sectorCount); 
-                
+            
                 float x = xy * MathF.Cos(sectorAngle);
-                float y = xy * MathF.Sin(sectorAngle);
-                
-                float nx = x;
-                float ny = y;
-                float nz = z;
-                
-                float u = (float)j / sectorCount;
-                float v = (float)i / stackCount;
+                float z = xy * MathF.Sin(sectorAngle); 
+            
+                Vector3 position = new(x, y, z);
+                Vector3 normal = new(x, y, z);
+                Vector2 uv = new((float)j / sectorCount, (float)i / stackCount);
 
-                vertices.AddRange(new float[] { x, y, z, nx, ny, nz, u, v });
+                vertices.Add(new Vertex(position, normal, uv));
             }
         }
+
         var indices = new List<int>();
-        
+    
         for (uint i = 0; i < stackCount; ++i) 
         {
             uint k1 = i * (sectorCount + 1);     
-            uint k2 = k1 + (sectorCount + 1);   
+            uint k2 = k1 + (sectorCount + 1);    
 
             for (int j = 0; j < sectorCount; ++j, ++k1, ++k2)
             {
@@ -116,7 +116,7 @@ public static class MeshGenerator
                     indices.Add((int)k2);
                     indices.Add((int)k1 + 1);
                 }
-                
+            
                 if (i != (stackCount - 1))
                 { 
                     indices.Add((int)k1 + 1);
@@ -126,24 +126,26 @@ public static class MeshGenerator
             }
         }
 
-        return new(vertices.ToArray(), indices.ToArray(), VertexLayouts.Default3D);
+        return new(vertices.ToArray(), indices.ToArray());
     }
 
-    public static VertexArray GenPlane(float size = 1, ushort textureTiling = 1)
+    public static CommonMesh GenPlane(float size = 1f, ushort textureTiling = 1)
     {
-        float[] vertices =
+        float halfSize = size / 2f;
+        Vertex[] vertices =
         {
-            //    Position          Normal                     UV
-             size/2, 0,  size/2,    0, 1, 0,     -textureTiling, 0,
-             size/2, 0, -size/2,    0, 1, 0,     -textureTiling,-textureTiling,
-            -size/2, 0, -size/2,    0, 1, 0,      0,            -textureTiling,
-            -size/2, 0,  size/2,    0, 1, 0,      0,             0,
+            new Vertex(new( halfSize, 0f,  halfSize), new Vector3(0f, 1f, 0f), new Vector2(-textureTiling, 0f)),
+            new Vertex(new( halfSize, 0f, -halfSize), new Vector3(0f, 1f, 0f), new Vector2(-textureTiling, -textureTiling)),
+            new Vertex(new(-halfSize, 0f, -halfSize), new Vector3(0f, 1f, 0f), new Vector2(0f, -textureTiling)),
+            new Vertex(new(-halfSize, 0f,  halfSize), new Vector3(0f, 1f, 0f), new Vector2(0f, 0f))
         };
+        
         int[] indices =
         {
             0, 1, 3,
             1, 2, 3
         };
-        return new(vertices, indices, VertexLayouts.Default3D);
+        
+        return new(vertices, indices);
     }
 }
