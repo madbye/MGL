@@ -1,6 +1,6 @@
 namespace MGL.Graphics;
 
-public enum EnableCap : uint
+public enum EnableCap 
 {
     Blend = 0x0BE2,
     DepthTest = 0x0B71,
@@ -13,5 +13,5 @@ public enum EnableCap : uint
     RasterizerDiscard = 0x8C89,
     PrimitiveRestart = 0x8F9D,
     PrimitiveRestartFixedIndex = 0x8D69,
-    DebugOutput = 0x9292
+    DebugOutput = 0x92E0
 }

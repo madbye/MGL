@@ -9,7 +9,7 @@ public enum TextureFilter
     Nearest
 }
 
-public class Texture2D
+public class Texture2D : IDisposable
 {
     public uint Handle { get; private set; }
     public uint Width { get; private set; }
@@ -125,5 +125,10 @@ public class Texture2D
                 pixels: ptr
             );
         }
+    }
+
+    public void Dispose()
+    {
+        _renderer.GlContext.DeleteTexture(Handle);
     }
 }

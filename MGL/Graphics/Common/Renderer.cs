@@ -41,8 +41,8 @@ public class Renderer
         GlContext.Clear(ClearBufferMask.DepthBufferBit);
     }
 
-    public void Viewport(int x, int y)
+    public void Viewport(uint x, uint y)
     {
-        GlContext.Viewport(new Vector2D<int>(x, y));
+        GlContext.Viewport(0, 0, x, y);
     }
 }

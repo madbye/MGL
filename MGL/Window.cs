@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using MGL.Graphics;
 using MGL.Input;
 using Silk.NET.Input;
@@ -11,9 +12,13 @@ public class Window
 {
     private IWindow _windowHandle;
     public static Window Current { get; set; }
-    
     public event Action<uint, uint>? OnResize;
+    
+    public float DeltaTime { get; private set; }
 
+    private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
+    private long _previousTicks;
+    
     public Window(uint width, uint height, string title)
     {
         var options = WindowOptions.Default with
@@ -38,7 +43,17 @@ public class Window
     public InputContext GetInputContext() => new(_windowHandle.CreateInput());
     public Renderer CreateRenderer() => new(_windowHandle.CreateOpenGL());
     public void SwapBuffers() => _windowHandle.SwapBuffers();
-    public void DoEvents() => _windowHandle.DoEvents();
+
+    public void DoEvents()
+    {
+        long currentTicks = _stopwatch.ElapsedTicks;
+        long deltaTicks = currentTicks - _previousTicks;
+        _previousTicks = currentTicks;
+        
+        DeltaTime = (float)((double)deltaTicks * 1000.0 / Stopwatch.Frequency);
+        
+        _windowHandle.DoEvents();
+    }
     public bool ShouldClose() => _windowHandle.IsClosing;
     public void Close() => _windowHandle.Close();
 
