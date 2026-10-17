@@ -24,7 +24,7 @@ public class MeshCollider : ISupportable
     private (Matrix4x4, List<Vector3>) _cachedTransformatedVertices = new();
     private bool _cachedTransformatedVerticesInited = false;
     
-    public List<Vector3> GetVerticesTransformated()
+    public List<Vector3> GetVerticesTransformed()
     {
         if (!_cachedTransformatedVerticesInited)
         {
@@ -52,7 +52,7 @@ public class MeshCollider : ISupportable
         if (Vertices.Count == 0)
             return Vector3.Zero;
 
-        List<Vector3> vertices = GetVerticesTransformated();
+        List<Vector3> vertices = GetVerticesTransformed();
 
         float maxDot = float.MinValue;
         Vector3 bestVertex = vertices[0];

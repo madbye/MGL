@@ -1,4 +1,5 @@
 using System.Numerics;
+using Silk.NET.Core;
 
 namespace MGL.Physics;
 
@@ -7,17 +8,19 @@ public static class GJK
     private const int MaxIterations = 64;
     private const float Epsilon = 1e-12f;
 
-    public static bool Intersect(ISupportable a, ISupportable b)
+    public static bool Intersect(ISupportable a, ISupportable b) => Intersect(a, b, out _);
+
+    public static bool Intersect(ISupportable a, ISupportable b, out List<Vector3> simplex)
     {
         Vector3 direction = Vector3.UnitX;
         Vector3 support = ComputeSupport(a, b, direction);
-
-        var simplex = new List<Vector3>(4) { support };
+        
+        simplex = new List<Vector3>(4) { support };
 
         direction = -support;
         if (direction.LengthSquared() < Epsilon)
         {
-            return true;
+            return Inflate(a, b, simplex);
         }
 
         for (int i = 0; i < MaxIterations; i++)
@@ -36,16 +39,48 @@ public static class GJK
 
             if (direction.LengthSquared() < Epsilon)
             {
-                return true;
+                return Inflate(a, b, simplex);
             }
         }
 
         return false;
     }
 
-    private static Vector3 ComputeSupport(ISupportable a, ISupportable b, Vector3 direction)
+    internal static Vector3 ComputeSupport(ISupportable a, ISupportable b, Vector3 direction) 
+        =>  a.GetSupportPoint(direction) - b.GetSupportPoint(-direction);
+    
+    private static readonly Vector3[] InflateDirs =
     {
-        return a.GetSupportPoint(direction) - b.GetSupportPoint(-direction);
+        Vector3.UnitX, -Vector3.UnitX,  Vector3.UnitY, -Vector3.UnitY,  Vector3.UnitZ, -Vector3.UnitZ 
+    };
+    
+    private static bool Inflate(ISupportable a, ISupportable b, List<Vector3> s)
+    {
+        while (s.Count < 4)
+        {
+            bool added = false;
+            foreach (var dir in InflateDirs)
+            {
+                Vector3 p = ComputeSupport(a, b, dir);
+                bool independent = s.Count switch
+                {
+                    1 => (p - s[0]).LengthSquared() > Epsilon,
+                    2 => Vector3.Cross(s[1] - s[0], p - s[0]).LengthSquared() > Epsilon,
+                    3 => MathF.Abs(Vector3.Dot(Vector3.Cross(s[1] - s[0], s[2] - s[0]), p - s[0])) > Epsilon,
+                    _ => false
+                };
+                if (independent)
+                {
+                    s.Add(p);
+                    added = true;
+                    break;
+                }
+            }
+
+            if (!added) return true;
+        }
+
+        return true;
     }
 
     private static bool UpdateSimplex(List<Vector3> simplex, ref Vector3 direction)
