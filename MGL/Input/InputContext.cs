@@ -3,7 +3,7 @@ using Silk.NET.Input;
 
 namespace MGL.Input;
 
-public class InputContext
+public class InputContext : IDisposable
 {
     public Action<Vector2, MouseButton>? Click;
     public Action<Vector2, MouseButton>? DoubleClick;
@@ -59,5 +59,10 @@ public class InputContext
     public bool GetMouseButton(MouseButton button)
     {
         return _inputContext.Mice[0].IsButtonPressed((Silk.NET.Input.MouseButton)button);
+    }
+
+    public void Dispose()
+    {
+        _inputContext.Dispose();
     }
 }

@@ -6,7 +6,7 @@ namespace MGL.Graphics;
 public class PostProcessingEffect
 {
     public ShaderProgram _program;
-    private VertexArray _vertexArray;
+    private VertexArray _quad;
     public Framebuffer Framebuffer { get; private set; }
 
     private Renderer _renderer;
@@ -26,7 +26,7 @@ public class PostProcessingEffect
 
         Framebuffer = new Framebuffer( renderer, 1, 1, textureFilter);
 
-        _vertexArray = VertexArray.FromCommonMesh(renderer, MeshGenerator.GenQuad());
+        _quad = VertexArray.FromCommonMesh(renderer, MeshGenerator.GenQuad());
     }
 
     private uint width, height;
@@ -44,7 +44,7 @@ public class PostProcessingEffect
         
         _program.Bind();
         texture2D.Bind();
-        _vertexArray.Draw();
+        _quad.Draw();
         
         Framebuffer.EndFrame();
         _renderer.Enable(EnableCap.DepthTest);

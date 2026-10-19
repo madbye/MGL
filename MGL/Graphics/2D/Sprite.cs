@@ -3,16 +3,16 @@ using MGL.Utils;
 
 namespace MGL.Graphics;
 
-public class Sprite
+public class Sprite : IDisposable
 {
-    private static VertexArray? _quad;
+    private VertexArray _quad;
     private Texture2D _texture;
     private Renderer _renderer;
     
     public Sprite(Renderer renderer, Image image, TextureFilter texFilter)
     {
         _renderer = renderer;
-        _quad ??= VertexArray.FromCommonMesh(renderer, MeshGenerator.GenQuad((float)image.Width / image.Height)); 
+        _quad = VertexArray.FromCommonMesh(renderer, MeshGenerator.GenQuad((float)image.Width / image.Height)); 
         _texture = Texture2D.FromImage(renderer, image, texFilter, true);
     }
 
@@ -29,5 +29,11 @@ public class Sprite
         _texture.Bind();
         
         _quad?.Draw();
+    }
+
+    public void Dispose()
+    {
+        _quad.Dispose();
+        _texture.Dispose();
     }
 }

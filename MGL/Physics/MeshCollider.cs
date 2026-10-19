@@ -21,19 +21,19 @@ public class MeshCollider : ISupportable
         Vertices.AddRange(vertices);
     }
 
-    private (Matrix4x4, List<Vector3>) _cachedTransformatedVertices = new();
-    private bool _cachedTransformatedVerticesInited = false;
+    private (Matrix4x4, List<Vector3>) _cachedTransformedVertices = new();
+    private bool _cachedTransformedVerticesInited = false;
     
     public List<Vector3> GetVerticesTransformed()
     {
-        if (!_cachedTransformatedVerticesInited)
+        if (!_cachedTransformedVerticesInited)
         {
-            _cachedTransformatedVerticesInited = true;
+            _cachedTransformedVerticesInited = true;
         }
         else
         {
-            if (Transformation == _cachedTransformatedVertices.Item1)
-                return _cachedTransformatedVertices.Item2;
+            if (Transformation == _cachedTransformedVertices.Item1)
+                return _cachedTransformedVertices.Item2;
         }
         List<Vector3> transformatedVertices = new List<Vector3>();
         
@@ -42,8 +42,8 @@ public class MeshCollider : ISupportable
             transformatedVertices.Add(Vector3.Transform(vertex, Transformation));
         }
 
-        _cachedTransformatedVertices.Item1 = Transformation;
-        _cachedTransformatedVertices.Item2 = transformatedVertices;
+        _cachedTransformedVertices.Item1 = Transformation;
+        _cachedTransformedVertices.Item2 = transformatedVertices;
         return transformatedVertices;
     }
 

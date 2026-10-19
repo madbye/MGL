@@ -4,7 +4,7 @@ using Silk.NET.OpenGL;
 
 namespace MGL.Graphics;
 
-public class Renderer
+public class Renderer : IDisposable
 {
     internal GL GlContext;
     public DefaultShaders DefaultShaders;
@@ -44,5 +44,10 @@ public class Renderer
     public void Viewport(uint x, uint y)
     {
         GlContext.Viewport(0, 0, x, y);
+    }
+
+    public void Dispose()
+    {
+        GlContext.Dispose();
     }
 }

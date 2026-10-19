@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace MGL.Graphics;
 
-public class DefaultShaders
+public class DefaultShaders : IDisposable
 {
     private ShaderProgram? _phong;
     private ShaderProgram? _unlit;
@@ -70,4 +70,12 @@ public class DefaultShaders
         return new (_renderer, new[]{frag, vert});
     }
 
+    public void Dispose()
+    {
+        _blit?.Dispose();
+        _pbr?.Dispose();
+        _phong?.Dispose();
+        _text?.Dispose();
+        _unlit?.Dispose();
+    }
 }

@@ -2,7 +2,7 @@ namespace MGL.Graphics;
 
 public static class Lighting
 {
-     public static void SetToProgram(Light[] lights, ShaderProgram program)
+    public static void SetToProgram(Light[] lights, ShaderProgram program)
     {
         program.SetUniform("numLights", lights.Length);
         

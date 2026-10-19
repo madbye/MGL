@@ -9,7 +9,7 @@ public class Framebuffer
     private uint _fbo;
     private uint _texture;
     
-    private static VertexArray _quad;
+    private VertexArray _quad;
     
     public uint Width { get; private set; }
     public uint Height { get; private set; }

@@ -30,6 +30,7 @@ public class ShaderProgram : IDisposable
         foreach (var shader in shaders)
         {
             _renderer.GlContext.DetachShader(Handle, shader.Handle);
+            shader.Dispose();
         }
     }
 

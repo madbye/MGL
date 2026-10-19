@@ -5,7 +5,7 @@ using Silk.NET.OpenGL;
 
 namespace MGL.Graphics;
 
-public class TextRenderer
+public class TextRenderer : IDisposable
 {
     private class TRenderer : IFontStashRenderer2, IDisposable
 	{
@@ -69,6 +69,7 @@ public class TextRenderer
 			_vertexTextBuffer.Dispose();
 			_indexTextBuffer.Dispose();
 			_shader.Dispose();
+			_textureManager.Dispose();
 		}
 
 		internal void Begin(int width, int height)
@@ -213,5 +214,10 @@ public class TextRenderer
         TextRenderer.width = (int)width;
         TextRenderer.height = (int)height;
     }
-    
+
+    public void Dispose()
+    {
+	    _trenderer.Dispose();
+	    _fontSystem.Dispose();
+    }
 }

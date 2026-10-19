@@ -26,37 +26,31 @@ public static class MeshGenerator
     {
         Vertex[] vertices =
         {
-            // Front face
             new Vertex(new(-0.5f, -0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(0f, 0f)),
             new Vertex(new( 0.5f, -0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(1f, 0f)),
             new Vertex(new( 0.5f,  0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(1f, 1f)),
             new Vertex(new(-0.5f,  0.5f,  0.5f), new Vector3(0f, 0f, 1f), new Vector2(0f, 1f)),
-
-            // Back face
+            
             new Vertex(new(-0.5f, -0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(1f, 0f)),
             new Vertex(new( 0.5f, -0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(0f, 0f)),
             new Vertex(new( 0.5f,  0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(0f, 1f)),
             new Vertex(new(-0.5f,  0.5f, -0.5f), new Vector3(0f, 0f, -1f), new Vector2(1f, 1f)),
-
-            // Top face
+            
             new Vertex(new(-0.5f,  0.5f, -0.5f), new Vector3(0f, 1f, 0f), new Vector2(0f, 1f)),
             new Vertex(new( 0.5f,  0.5f, -0.5f), new Vector3(0f, 1f, 0f), new Vector2(1f, 1f)),
             new Vertex(new( 0.5f,  0.5f,  0.5f), new Vector3(0f, 1f, 0f), new Vector2(1f, 0f)),
             new Vertex(new(-0.5f,  0.5f,  0.5f), new Vector3(0f, 1f, 0f), new Vector2(0f, 0f)),
-
-            // Bottom face
+            
             new Vertex(new(-0.5f, -0.5f, -0.5f), new Vector3(0f, -1f, 0f), new Vector2(0f, 0f)),
             new Vertex(new( 0.5f, -0.5f, -0.5f), new Vector3(0f, -1f, 0f), new Vector2(1f, 0f)),
             new Vertex(new( 0.5f, -0.5f,  0.5f), new Vector3(0f, -1f, 0f), new Vector2(1f, 1f)),
             new Vertex(new(-0.5f, -0.5f,  0.5f), new Vector3(0f, -1f, 0f), new Vector2(0f, 1f)),
-
-            // Right face
+            
             new Vertex(new( 0.5f, -0.5f, -0.5f), new Vector3(1f, 0f, 0f), new Vector2(1f, 0f)),
             new Vertex(new( 0.5f, -0.5f,  0.5f), new Vector3(1f, 0f, 0f), new Vector2(0f, 0f)),
             new Vertex(new( 0.5f,  0.5f,  0.5f), new Vector3(1f, 0f, 0f), new Vector2(0f, 1f)),
             new Vertex(new( 0.5f,  0.5f, -0.5f), new Vector3(1f, 0f, 0f), new Vector2(1f, 1f)),
-
-            // Left face
+            
             new Vertex(new(-0.5f, -0.5f, -0.5f), new Vector3(-1f, 0f, 0f), new Vector2(0f, 0f)),
             new Vertex(new(-0.5f, -0.5f,  0.5f), new Vector3(-1f, 0f, 0f), new Vector2(1f, 0f)),
             new Vertex(new(-0.5f,  0.5f,  0.5f), new Vector3(-1f, 0f, 0f), new Vector2(1f, 1f)),
