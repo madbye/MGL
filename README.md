@@ -91,5 +91,5 @@ while (!window.ShouldClose())
 vao.Dispose();
 texture.Dispose();
 shader.Dispose();
-
+renderer.Dispose();
 ```
