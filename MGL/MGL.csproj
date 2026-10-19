@@ -28,23 +28,14 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\Shaders\Phong\shader.frag" />
-      <None Remove="data\shaders\phong\shader.vert" />
       <EmbeddedResource Include="Resources\Shaders\Phong\shader.vert"  />
-      <None Remove="data\shaders\text\shader.frag" />
       <EmbeddedResource Include="Resources\Shaders\Text\shader.frag" />
-      <None Remove="data\shaders\text\shader.vert" />
       <EmbeddedResource Include="Resources\Shaders\Text\shader.vert" />
-      <None Remove="data\shaders\blit\shader.frag" />
       <EmbeddedResource Include="Resources\Shaders\Blit\shader.frag" />
-      <None Remove="data\shaders\blit\shader.vert" />
       <EmbeddedResource Include="Resources\Shaders\Blit\shader.vert" />
-      <None Remove="data\shaders\PBR\shader.frag" />
       <EmbeddedResource Include="Resources\Shaders\PBR\shader.frag" />
-      <None Remove="data\shaders\PBR\shader.vert" />
       <EmbeddedResource Include="Resources\Shaders\PBR\shader.vert" />
-      <None Remove="Resources\Shaders\Unlit\shader.frag" />
       <EmbeddedResource Include="Resources\Shaders\Unlit\shader.frag" />
-      <None Remove="Resources\Shaders\Unlit\shader.vert" />
       <EmbeddedResource Include="Resources\Shaders\Unlit\shader.vert" />
     </ItemGroup>
     
