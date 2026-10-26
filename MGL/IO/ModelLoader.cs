@@ -1,6 +1,7 @@
 using System.Drawing;
 using Assimp;
 using MGL.Graphics;
+using MGL.Physics;
 using Material = Assimp.Material;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 
@@ -8,8 +9,6 @@ namespace MGL.IO;
 
 public static class ModelLoader
 {
-    private static AssimpContext _assimp = new();
-
     public static Model LoadModel(Renderer renderer, string path)
     {
         using (var importer = new AssimpContext())
@@ -24,7 +23,9 @@ public static class ModelLoader
             {
                 materials[i] = ProcessMaterial(renderer, scene.Materials[i], scene, Path.GetDirectoryName(path));
             }
-            return new(root, materials);
+            Model model = new(root, materials);
+            model.Renderer = renderer;
+            return model;
         }
     }
 
@@ -33,12 +34,12 @@ public static class ModelLoader
         var result = new Graphics.Material();
         if (material.HasColorDiffuse)
         {
-            Color4D сolor4d = material.ColorDiffuse;
+            Color4D color4D = material.ColorDiffuse;
             result.BaseColor = Color.FromArgb(
-                (byte)(сolor4d.A * 255),
-                (byte)(сolor4d.R * 255),
-                (byte)(сolor4d.G * 255),
-                (byte)(сolor4d.B * 255)
+                (byte)(color4D.A * 255),
+                (byte)(color4D.R * 255),
+                (byte)(color4D.G * 255),
+                (byte)(color4D.B * 255)
             );
         }
         if (material.HasTextureDiffuse)

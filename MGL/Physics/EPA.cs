@@ -15,7 +15,7 @@ public static class EPA
     }
 
     public static bool TryGetPenetration(
-        ISupportable a, ISupportable b,
+        ICollider a, ICollider b,
         IReadOnlyList<Vector3> simplex,
         out Vector3 normal, out float depth)
     {

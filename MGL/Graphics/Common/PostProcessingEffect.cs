@@ -5,11 +5,11 @@ namespace MGL.Graphics;
 
 public class PostProcessingEffect
 {
-    public ShaderProgram _program;
-    private VertexArray _quad;
+    public ShaderProgram Shader { get; private set; }
     public Framebuffer Framebuffer { get; private set; }
 
     private Renderer _renderer;
+    private VertexArray _quad;
     
     public PostProcessingEffect(Renderer renderer, Shader shader, TextureFilter textureFilter = TextureFilter.Linear)
     {
@@ -21,7 +21,7 @@ public class PostProcessingEffect
         {
             var vert = new Shader(renderer, reader.ReadToEnd(), ShaderType.Vertex);
             vert.Compile();
-            _program = new(renderer, new []{vert, shader});
+            Shader = new(renderer, new []{vert, shader});
         }
 
         Framebuffer = new Framebuffer( renderer, 1, 1, textureFilter);
@@ -42,7 +42,7 @@ public class PostProcessingEffect
         _renderer.Disable(EnableCap.DepthTest);
         Framebuffer.BeginFrame();
         
-        _program.Bind();
+        Shader.Bind();
         texture2D.Bind();
         _quad.Draw();
         

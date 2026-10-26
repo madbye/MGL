@@ -8,9 +8,9 @@ public static class GJK
     private const int MaxIterations = 64;
     private const float Epsilon = 1e-12f;
 
-    public static bool Intersect(ISupportable a, ISupportable b) => Intersect(a, b, out _);
+    public static bool Intersect(ICollider a, ICollider b) => Intersect(a, b, out _);
 
-    public static bool Intersect(ISupportable a, ISupportable b, out List<Vector3> simplex)
+    public static bool Intersect(ICollider a, ICollider b, out List<Vector3> simplex)
     {
         Vector3 direction = Vector3.UnitX;
         Vector3 support = ComputeSupport(a, b, direction);
@@ -46,7 +46,7 @@ public static class GJK
         return false;
     }
 
-    internal static Vector3 ComputeSupport(ISupportable a, ISupportable b, Vector3 direction) 
+    internal static Vector3 ComputeSupport(ICollider a, ICollider b, Vector3 direction) 
         =>  a.GetSupportPoint(direction) - b.GetSupportPoint(-direction);
     
     private static readonly Vector3[] InflateDirs =
@@ -54,7 +54,7 @@ public static class GJK
         Vector3.UnitX, -Vector3.UnitX,  Vector3.UnitY, -Vector3.UnitY,  Vector3.UnitZ, -Vector3.UnitZ 
     };
     
-    private static bool Inflate(ISupportable a, ISupportable b, List<Vector3> s)
+    private static bool Inflate(ICollider a, ICollider b, List<Vector3> s)
     {
         while (s.Count < 4)
         {

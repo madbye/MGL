@@ -1,4 +1,5 @@
 using System.Numerics;
+using MGL.Physics;
 
 namespace MGL.Graphics;
 
@@ -26,6 +27,21 @@ public class ModelNode(string name, List<ModelNode> nodes, List<ModelMesh> meshe
         {
             child.Draw(globalTransform, materials);
         }
+    }
+
+    public List<MeshCollider> GetMeshColliders(Renderer renderer)
+    {
+        List<MeshCollider> colliders = new List<MeshCollider>();
+        foreach (var mesh in Meshes)
+        {
+            colliders.Add(mesh.GetMeshCollider(renderer));
+        }
+        foreach (var child in Children)
+        {
+            colliders.AddRange(child.GetMeshColliders(renderer));
+        }
+
+        return colliders;
     }
     public ModelNode? FindChild(string name)
     {
