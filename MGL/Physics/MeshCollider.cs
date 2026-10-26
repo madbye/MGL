@@ -83,9 +83,11 @@ public class MeshCollider : ICollider
         
         for (int i = 0; i < Indices.Count; i += 3)
         {
-            Vector3 v0 = Vertices[Indices[i]];
-            Vector3 v1 = Vertices[Indices[i + 1]];
-            Vector3 v2 = Vertices[Indices[i + 2]];
+            List<Vector3> vertices = GetVerticesTransformed();   
+            
+            Vector3 v0 = vertices[Indices[i]];
+            Vector3 v1 = vertices[Indices[i + 1]];
+            Vector3 v2 = vertices[Indices[i + 2]];
 
             RaycastResult result = CheckRayTriangleIntersection(ray, v0, v1, v2);
 

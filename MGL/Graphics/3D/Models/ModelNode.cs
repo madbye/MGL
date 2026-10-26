@@ -34,7 +34,9 @@ public class ModelNode(string name, List<ModelNode> nodes, List<ModelMesh> meshe
         List<MeshCollider> colliders = new List<MeshCollider>();
         foreach (var mesh in Meshes)
         {
-            colliders.Add(mesh.GetMeshCollider(renderer));
+            MeshCollider collider = mesh.GetMeshCollider(renderer);
+            collider.Transformation = transform;
+            colliders.Add(collider);
         }
         foreach (var child in Children)
         {
