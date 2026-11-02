@@ -81,7 +81,6 @@ while (!window.ShouldClose())
     renderer.ClearDepth();
     
     // Draw geometry
-    shader.Bind();
     vao.Draw();
     
     window.SwapBuffers();
