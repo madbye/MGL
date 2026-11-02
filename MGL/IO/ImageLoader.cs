@@ -1,26 +1,19 @@
-using System.Drawing;
-using System.IO;
-using MGL.Graphics;
 using MGL.Graphics;
 using StbImageSharp;
+using ColorComponents = MGL.Graphics.ColorComponents;
+
 
 namespace MGL.IO;
 
-public enum ColorComponents
-{
-    R,
-    RGB,
-    RGBA
-}
 public static class ImageLoader
 {
     public static Image LoadImage(Stream stream, ColorComponents colorComponents)
     {
         StbImage.stbi_set_flip_vertically_on_load(1);
-        var (cc, channels) = GetStbColorComponents(colorComponents);
+        var cc = GetStbColorComponents(colorComponents);
         
         ImageResult result = ImageResult.FromStream(stream, cc);
-        return new Image((uint)result.Width, (uint)result.Height, channels, result.Data);
+        return new Image((uint)result.Width, (uint)result.Height, colorComponents, result.Data);
     }
     
     public static Image LoadImage(string path, ColorComponents colorComponents)
@@ -31,13 +24,13 @@ public static class ImageLoader
         }
     }
     
-    private static (StbImageSharp.ColorComponents cc, byte channels) GetStbColorComponents(ColorComponents colorComponents)
+    private static StbImageSharp.ColorComponents GetStbColorComponents(ColorComponents colorComponents)
     {
         return colorComponents switch
         {
-            ColorComponents.R    => (StbImageSharp.ColorComponents.Grey, 1),
-            ColorComponents.RGB  => (StbImageSharp.ColorComponents.RedGreenBlue, 3),
-            ColorComponents.RGBA => (StbImageSharp.ColorComponents.RedGreenBlueAlpha, 4),
+            ColorComponents.R    => StbImageSharp.ColorComponents.Grey,
+            ColorComponents.RGB  => StbImageSharp.ColorComponents.RedGreenBlue,
+            ColorComponents.RGBA => StbImageSharp.ColorComponents.RedGreenBlueAlpha,
             _ => throw new System.ArgumentOutOfRangeException(nameof(colorComponents))
         };
     }

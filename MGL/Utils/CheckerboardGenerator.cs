@@ -23,6 +23,6 @@ public static class CheckerboardGenerator
             }
         }
 
-        return new((uint)size, (uint)size, 3, pixels);
+        return new((uint)size, (uint)size, ColorComponents.RGB, pixels);
     }
 }

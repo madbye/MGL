@@ -55,31 +55,32 @@ public class Texture2D : IDisposable
         Height = (uint)renderer.GlContext.GetTextureParameter(handle, GetTextureParameter.TextureHeight);
     }
 
-    public static unsafe Texture2D FromImage(Renderer renderer, Image image, TextureFilter textureFilter, bool enableMipmaps)
+    public unsafe Texture2D(Renderer renderer, uint width, uint height, byte[] data, ColorComponents colorComponents, TextureFilter textureFilter, bool enableMipmaps)
     {
         uint handle = renderer.GlContext.GenTexture();
 
         renderer.GlContext.BindTexture(TextureTarget.Texture2D, handle);
-
         renderer.GlContext.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
         
-        switch (image.Channels)
+        switch (colorComponents)
         {
-            case 1:
-                fixed (byte* ptr = image.PixelData)
-                    renderer.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Red, image.Width,
-                        image.Height, 0, PixelFormat.Red, PixelType.UnsignedByte, ptr);
+            case ColorComponents.R:
+                fixed (byte* ptr = data)
+                    renderer.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Red, width,
+                        height, 0, PixelFormat.Red, PixelType.UnsignedByte, ptr);
                 break;
-            case 3:
-                fixed (byte* ptr = image.PixelData)
-                    renderer.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgb, image.Width,
-                        image.Height, 0, PixelFormat.Rgb, PixelType.UnsignedByte, ptr);
+            case ColorComponents.RGB:
+                fixed (byte* ptr = data)
+                    renderer.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgb, width,
+                        height, 0, PixelFormat.Rgb, PixelType.UnsignedByte, ptr);
                 break;
-            case 4:
-                fixed (byte* ptr = image.PixelData)
-                    renderer.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba, image.Width,
-                        image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, ptr);
+            case ColorComponents.RGBA:
+                fixed (byte* ptr = data)
+                    renderer.GlContext.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba, width,
+                        height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, ptr);
                 break;
+            default:
+                throw new ArgumentException("Unknown image format.");
         }
 
         
@@ -99,7 +100,15 @@ public class Texture2D : IDisposable
         
         renderer.GlContext.BindTexture(TextureTarget.Texture2D, 0);
 
-        return new(renderer, handle);
+        _renderer = renderer;
+        Handle = handle;
+        Width = width;
+        Height = height;
+    }
+
+    public static Texture2D FromImage(Renderer renderer, Image image, TextureFilter textureFilter, bool enableMipmaps)
+    {
+        return new(renderer, image.Width, image.Height, image.PixelData, image.ColorComponents, textureFilter, enableMipmaps);
     }
 
     public void Bind(byte textureSlot = 0)
