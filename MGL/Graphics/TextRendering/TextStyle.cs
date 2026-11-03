@@ -7,5 +7,5 @@ public struct TextStyle(Font font, Color textColor, bool stroked = false, int st
     public Font Font { get; set; } = font;
     public Color TextColor { get; set; } = textColor;
     public bool Stroked { get; set; } = stroked;
-    public int StrokeThikness { get; set; } = strokeThickness;
+    public int StrokeThickness { get; set; } = strokeThickness;
 }

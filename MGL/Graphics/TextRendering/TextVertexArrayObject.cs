@@ -32,7 +32,7 @@ namespace MGL.Graphics
 			_renderer.GlContext.BindVertexArray(_handle);
 		}
 
-		public unsafe void VertexAttribPointer(int location, int size, VertexAttribPointerType type, bool normalized, int offset)
+		public unsafe void VertexAttribPointer(int location, int size, Silk.NET.OpenGL.VertexAttribPointerType type, bool normalized, int offset)
 		{
 			_renderer.GlContext.EnableVertexAttribArray((uint)location);
 			_renderer.GlContext.VertexAttribPointer((uint)location, size, type, normalized, (uint)_stride, (void*)offset);

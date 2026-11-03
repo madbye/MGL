@@ -47,7 +47,7 @@ public class VertexArray : IDisposable
         foreach (var i in vertexLayout)
         {
             _renderer.GlContext.EnableVertexAttribArray(i.Location);
-            _renderer.GlContext.VertexAttribPointer(i.Location, (int)i.Size, VertexAttribPointerType.Float, false, stride, (void*)(i.Offset * sizeof(float)));
+            _renderer.GlContext.VertexAttribPointer(i.Location, (int)i.Size, (Silk.NET.OpenGL.VertexAttribPointerType)i.Type, false, stride, (void*)(i.Offset * sizeof(float)));
         }
         
         _renderer.GlContext.BindVertexArray(0);

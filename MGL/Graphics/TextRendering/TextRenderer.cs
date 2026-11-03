@@ -46,13 +46,13 @@ public class TextRenderer : IDisposable
 			_vao.Bind();
 
 			var location = _shader.GetAttribLocation("a_position");
-			_vao.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, 0);
+			_vao.VertexAttribPointer(location, 3, Silk.NET.OpenGL.VertexAttribPointerType.Float, false, 0);
 
 			location = _shader.GetAttribLocation("a_color");
-			_vao.VertexAttribPointer(location, 4, VertexAttribPointerType.UnsignedByte, true, 12);
+			_vao.VertexAttribPointer(location, 4, Silk.NET.OpenGL.VertexAttribPointerType.UnsignedByte, true, 12);
 
 			location = _shader.GetAttribLocation("a_texCoords0");
-			_vao.VertexAttribPointer(location, 2, VertexAttribPointerType.Float, false, 16);
+			_vao.VertexAttribPointer(location, 2, Silk.NET.OpenGL.VertexAttribPointerType.Float, false, 16);
 		}
 
 		~TRenderer() => Dispose(false);
@@ -192,7 +192,7 @@ public class TextRenderer : IDisposable
 	    _trenderer.Begin(width, height);
 	    
 	    if(style.Stroked)
-			style.Font.Handle.DrawText(_trenderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, effect:FontSystemEffect.Stroked, effectAmount: style.StrokeThikness, characterSpacing: 1);
+			style.Font.Handle.DrawText(_trenderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, effect:FontSystemEffect.Stroked, effectAmount: style.StrokeThickness, characterSpacing: 1);
 	    else
 		    style.Font.Handle.DrawText(_trenderer, text, position, color, rotation * MathF.PI / 180, origin.Value, scale.Value, characterSpacing: 1);
         _trenderer.End();
