@@ -31,6 +31,7 @@ var window = new Window(1280u, 720u, "MGL Demo");
 window.Initialize();
 
 var renderer = window.CreateRenderer();
+renderer.Enable(EnableCap.DepthTest);
 
 // 2. Setup Camera
 var camera = new PerspectiveCamera(
@@ -45,7 +46,12 @@ var camera = new PerspectiveCamera(
 camera.LookAt(Vector3.Zero);
 
 // 3. Load Resources (Mesh, Texture, Shader)
+var shader = renderer.DefaultShaders.GetUnlit();
+shader.Bind();
+shader.SetUniform("model", Matrix4x4.Identity);
+
 var vao = VertexArray.FromCommonMesh(renderer, MeshGenerator.GenCube());
+
 var texture = Texture2D.FromImage(
     renderer, 
     CheckerboardGenerator.GenCheckerboard(Color.Magenta, Color.Black, 4), 
@@ -53,12 +59,6 @@ var texture = Texture2D.FromImage(
     false
 );
 texture.Bind();
-
-var shader = renderer.DefaultShaders.GetUnlit();
-shader.Bind();
-shader.SetUniform("model", Matrix4x4.Identity);
-
-renderer.Enable(EnableCap.DepthTest);
 
 // 4. Handle Window Resize
 window.OnResize += (newWidth, newHeight) =>
@@ -80,7 +80,6 @@ while (!window.ShouldClose())
     renderer.ClearDepth();
     
     // Draw geometry
-    shader.Bind();
     vao.Draw();
     
     window.SwapBuffers();
