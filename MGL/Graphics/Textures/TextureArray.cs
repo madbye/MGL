@@ -21,7 +21,6 @@ public class TextureArray : IDisposable
         Width = textures[0].Width;
         Height = textures[0].Height;
         
-
         GLEnum internalFormat = textures[0].ColorComponents switch
         {
             ColorComponents.R => GLEnum.R8,
@@ -80,6 +79,11 @@ public class TextureArray : IDisposable
         
         gl.BindTexture(GLEnum.Texture2DArray, 0);
     }
+    
+    public void Bind()
+    {
+        _renderer.GlContext.BindTexture(GLEnum.Texture2DArray, Handle);
+    }
 
     private void CheckTextures(Image[] textures)
     {
@@ -97,7 +101,7 @@ public class TextureArray : IDisposable
             if (texture.ColorComponents != colorComponents) throw new ArgumentException("The textures must be the same pixel format.");
         }
     }
-
+    
     public void Dispose()
     {
         _renderer.GlContext.DeleteTexture(Handle);
