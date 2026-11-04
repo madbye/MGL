@@ -45,9 +45,8 @@ var camera = new PerspectiveCamera(
 camera.LookAt(Vector3.Zero);
 
 // 3. Load Resources (Mesh, Texture, Shader)
-using var vao = VertexArray.FromCommonMesh(renderer, MeshGenerator.GenCube());
-
-using var texture = Texture2D.FromImage(
+var vao = VertexArray.FromCommonMesh(renderer, MeshGenerator.GenCube());
+var texture = Texture2D.FromImage(
     renderer, 
     CheckerboardGenerator.GenCheckerboard(Color.Magenta, Color.Black, 4), 
     TextureFilter.Nearest, 
