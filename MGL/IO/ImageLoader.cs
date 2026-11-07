@@ -2,7 +2,6 @@ using MGL.Graphics;
 using StbImageSharp;
 using ColorComponents = MGL.Graphics.ColorComponents;
 
-
 namespace MGL.IO;
 
 public static class ImageLoader
