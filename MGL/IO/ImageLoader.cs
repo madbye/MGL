@@ -7,21 +7,19 @@ namespace MGL.IO;
 
 public static class ImageLoader
 {
-    public static Image LoadImage(Stream stream, ColorComponents colorComponents)
+    public static Image LoadImage(Stream stream, ColorComponents colorComponents, bool flipVertically = false)
     {
-        StbImage.stbi_set_flip_vertically_on_load(1);
+        StbImage.stbi_set_flip_vertically_on_load(flipVertically ? 1 : 0);
         var cc = GetStbColorComponents(colorComponents);
         
         ImageResult result = ImageResult.FromStream(stream, cc);
         return new Image((uint)result.Width, (uint)result.Height, colorComponents, result.Data);
     }
     
-    public static Image LoadImage(string path, ColorComponents colorComponents)
+    public static Image LoadImage(string path, ColorComponents colorComponents, bool flipVertically = false)
     {
         using (FileStream stream = File.OpenRead(path))
-        {
-            return LoadImage(stream, colorComponents);
-        }
+            return LoadImage(stream, colorComponents, flipVertically);
     }
     
     private static StbImageSharp.ColorComponents GetStbColorComponents(ColorComponents colorComponents)
